@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Copilot Metrics Dashboard
 
-## Getting Started
+A visualization dashboard for GitHub Copilot metrics built with Next.js.
 
-First, run the development server:
+## Features
+
+- Interactive data visualizations
+- Filter metrics by date range
+- Export metrics as CSV
+- Team and individual performance insights
+- Integration with GitHub Copilot API
+
+## Prerequisites
+
+- Node.js 18+ and npm/yarn
+- GitHub Copilot license and access
+- Authorization credentials for the Copilot API
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/copilot-metrics-dashboard.git
+cd copilot-metrics-dashboard/src/dashboard
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
+
+## Environment Setup
+
+1. Create a `.env.local` file in the project root:
+```bash
+# GitHub API settings (required only if not using database options below)
+GITHUB_ORGANIZATION=your_github_organization
+GITHUB_ENTERPRISE=your_github_enterprise_name  # can be omitted if not using GitHub Enterprise
+GITHUB_TOKEN=your_github_token
+GITHUB_API_VERSION=your_github_api_version  # e.g., "2022-11-28"
+GITHUB_API_SCOPE=organization  # or "enterprise" if using GitHub Enterprise
+
+# Database settings - if either of these options is configured, 
+# the GitHub API settings above are not required:
+
+# Option 1: Azure CosmosDB
+AZURE_COSMOSDB_ENDPOINT=your_cosmosdb_endpoint
+AZURE_COSMOSDB_KEY=your_cosmosdb_key
+
+# Option 2: SQLite (local storage)
+ENABLE_SQLITE=true
+# Optional: Specify a custom path for the SQLite database
+# SQLITE_DB_PATH=/custom/path/to/copilot-metrics.db
+
+# Feature flags (optional)
+ENABLE_DASHBOARD_FEATURE=true
+ENABLE_SEATS_FEATURE=true
+```
+
+2. Replace the placeholder values with your actual credentials.
+
+## Running the Dashboard
+
+Start the development server:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The dashboard will be available at [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage Guide
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Viewing Metrics
 
-## Learn More
+1. Navigate to the main dashboard page
+2. Select the desired date range using the date picker
+3. Browse through different metric categories:
+   - Acceptance Rate
+   - Time Saved
+   - Suggestions Count
+   - Team Performance
 
-To learn more about Next.js, take a look at the following resources:
+### Filtering Data
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Use the filters in the sidebar to narrow down metrics by:
+- Team members
+- Projects
+- Programming languages
+- Time period
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Exporting Data
 
-## Deploy on Vercel
+1. Apply desired filters
+2. Click the "Export" button in the top-right corner
+3. Choose your preferred format (CSV, JSON)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Configuration Options
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The dashboard offers several configuration options:
+
+- **Environment Variables**: Adjust settings in your `.env.local` file as described in the Environment Setup section
+- **Feature Flags**: Enable/disable features using the environment variables like `ENABLE_DASHBOARD_FEATURE` and `ENABLE_SEATS_FEATURE`
+- **Database Selection**: Choose between CosmosDB and SQLite by setting the appropriate environment variables
+
+## Troubleshooting
+
+- **API Connection Issues**: Verify your GitHub token has the appropriate scopes
+- **No Data Appearing**: Check date range filters and API permissions
+- **Slow Performance**: Consider reducing the date range or applying more filters
+
+## Contributing
+
+Contributions are welcome! Please see our [contributing guide](github.com/cardonator/copilot-metrics-dashboard/CONTRIBUTING.md) for details.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

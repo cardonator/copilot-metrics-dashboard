@@ -1,4 +1,4 @@
-import { LayoutDashboard, Menu, Users } from "lucide-react";
+import { LayoutDashboard, Menu, Users, FileText } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -6,6 +6,7 @@ import Image from "next/image";
 import { MainNavItem } from "./main-nav-item";
 import { ThemeToggle } from "./theme-toggle";
 import { getFeatures } from "@/utils/helpers";
+import { isDatabaseConfigured } from "@/services/env-service";
 
 const CompanyLogo = () => {
   return (
@@ -17,12 +18,12 @@ const CompanyLogo = () => {
         alt="GitHub Copilot Dashboard"
       />
     </MainNavItem>
-
   );
 };
 
 const MenuItems = () => {
   const features = getFeatures();
+  const useDb = isDatabaseConfigured();
 
   return (
     <>
@@ -34,6 +35,12 @@ const MenuItems = () => {
         <MainNavItem path="/seats">
           <Users size={18} strokeWidth={1.4} />
           Seats
+        </MainNavItem>
+      )}
+      {!useDb && (
+        <MainNavItem path="/raw">
+          <FileText size={18} strokeWidth={1.4} />
+          Raw
         </MainNavItem>
       )}
     </>
@@ -65,7 +72,8 @@ export const AppHeader = () => {
       <nav className="md:hidden">
         <CompanyLogo />
       </nav>
-      <div className="flex items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+
+      <div className="ml-auto flex items-center gap-2">
         <ThemeToggle />
       </div>
     </header>

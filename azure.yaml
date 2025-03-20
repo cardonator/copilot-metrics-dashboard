@@ -10,5 +10,5 @@ services:
     host: appservice
   ingestion:
     project: ./src/background/DataIngestion
-    language: csharp
+    language: golang
     host: function

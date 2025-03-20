@@ -5,6 +5,12 @@
 
 # Introduction
 
+GitHub Copilot Metrics Dashboard is a reimplementation and fork of the official microsoft/copilot-metrics-dashboard repository. The background job has been ported to golang. The frontend has had numerous changes and enhancements. Much of this README remains from that project for now, however more detailed README files specific to this fork can be found in the src/background and src/dashboard folders.
+
+**NOTE**: This has not been tested deploying to Azure using the accelerator or az library discussed below.
+
+---
+
 The GitHub Copilot Metrics Dashboard is a solution accelerator designed to visualize metrics from GitHub Copilot using the [GitHub Copilot Metrics API](https://docs.github.com/en/enterprise-cloud@latest/rest/copilot/copilot-metrics?apiVersion=2022-11-28) and [GitHub Copilot User Management API](https://docs.github.com/en/enterprise-cloud@latest/rest/copilot/copilot-user-management?apiVersion=2022-11-28).
 
 ## Dashboard
@@ -77,17 +83,7 @@ azd up --debug
 
 # Contributing
 
-This project welcomes contributions and suggestions. Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
-
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+This project welcomes contributions and suggestions. 
 
 # Trademarks
 
