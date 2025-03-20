@@ -1,0 +1,93 @@
+{
+  "total_seats": 10,
+  "seats": [
+    {
+      "created_at": "2024-01-01T00:00:00Z",
+      "updated_at": "2024-01-01T00:00:00Z",
+      "pending_cancellation_date": null,
+      "last_activity_at": "2024-06-24T12:00:00Z",
+      "last_activity_editor": "vscode",
+      "plan_type": "business",
+      "assignee": {
+        "id": 1001,
+        "login": "user1",
+        "name": "User One",
+        "node_id": "U_1001",
+        "avatar_url": "https://github.com/avatars/u/1001",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/user1",
+        "html_url": "https://github.com/user1",
+        "followers_url": "https://api.github.com/users/user1/followers",
+        "following_url": "https://api.github.com/users/user1/following{/other_user}",
+        "gists_url": "https://api.github.com/users/user1/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/user1/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/user1/subscriptions",
+        "organizations_url": "https://api.github.com/users/user1/orgs",
+        "repos_url": "https://api.github.com/users/user1/repos",
+        "events_url": "https://api.github.com/users/user1/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/user1/received_events",
+        "type": "User",
+        "site_admin": false
+      },
+      "assigning_team": null,
+      "organization": {
+        "login": "test-organization",
+        "id": 2001,
+        "node_id": "O_2001",
+        "url": "https://api.github.com/orgs/test-organization",
+        "repos_url": "https://api.github.com/orgs/test-organization/repos",
+        "events_url": "https://api.github.com/orgs/test-organization/events",
+        "hooks_url": "https://api.github.com/orgs/test-organization/hooks",
+        "issues_url": "https://api.github.com/orgs/test-organization/issues",
+        "members_url": "https://api.github.com/orgs/test-organization/members{/member}",
+        "public_members_url": "https://api.github.com/orgs/test-organization/public_members{/member}",
+        "avatar_url": "https://github.com/avatars/u/2001",
+        "description": "Test Organization"
+      }
+    },
+    {
+      "created_at": "2024-01-02T00:00:00Z",
+      "updated_at": "2024-01-02T00:00:00Z",
+      "pending_cancellation_date": null,
+      "last_activity_at": "2024-06-23T15:30:00Z",
+      "last_activity_editor": "vscode",
+      "plan_type": "business",
+      "assignee": {
+        "id": 1002,
+        "login": "user2",
+        "name": "User Two",
+        "node_id": "U_1002",
+        "avatar_url": "https://github.com/avatars/u/1002",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/user2",
+        "html_url": "https://github.com/user2",
+        "followers_url": "https://api.github.com/users/user2/followers",
+        "following_url": "https://api.github.com/users/user2/following{/other_user}",
+        "gists_url": "https://api.github.com/users/user2/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/user2/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/user2/subscriptions",
+        "organizations_url": "https://api.github.com/users/user2/orgs",
+        "repos_url": "https://api.github.com/users/user2/repos",
+        "events_url": "https://api.github.com/users/user2/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/user2/received_events",
+        "type": "User",
+        "site_admin": false
+      },
+      "assigning_team": null,
+      "organization": {
+        "login": "test-organization",
+        "id": 2001,
+        "node_id": "O_2001",
+        "url": "https://api.github.com/orgs/test-organization",
+        "repos_url": "https://api.github.com/orgs/test-organization/repos",
+        "events_url": "https://api.github.com/orgs/test-organization/events",
+        "hooks_url": "https://api.github.com/orgs/test-organization/hooks",
+        "issues_url": "https://api.github.com/orgs/test-organization/issues",
+        "members_url": "https://api.github.com/orgs/test-organization/members{/member}",
+        "public_members_url": "https://api.github.com/orgs/test-organization/public_members{/member}",
+        "avatar_url": "https://github.com/avatars/u/2001",
+        "description": "Test Organization"
+      }
+    }
+  ]
+}

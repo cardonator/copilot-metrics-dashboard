@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  copilot-metrics:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      # GitHub API Settings
+      - GITHUB_ENTERPRISE=${GITHUB_ENTERPRISE}
+      - GITHUB_ORGANIZATION=${GITHUB_ORGANIZATION}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - GITHUB_API_VERSION=${GITHUB_API_VERSION:-2022-11-28}
+      - GITHUB_API_SCOPE=${GITHUB_API_SCOPE:-organization}
+      
+      # Database Settings
+      - STORAGE_TYPE=${STORAGE_TYPE:-sqlite}
+      - SQLITE_DB_PATH=/app/data/copilot-metrics.db
+      # Or for CosmosDB:
+      # - AZURE_COSMOSDB_ENDPOINT=${AZURE_COSMOSDB_ENDPOINT}
+      # - AZURE_COSMOSDB_KEY=${AZURE_COSMOSDB_KEY}
+      
+      # Feature flags
+      - ENABLE_DASHBOARD_FEATURE=${ENABLE_DASHBOARD_FEATURE:-true}
+      - ENABLE_SEATS_FEATURE=${ENABLE_SEATS_FEATURE:-true}
+      
+    volumes:
+      - copilot_data:/app/data
+
+volumes:
+  copilot_data:

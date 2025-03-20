@@ -2,16 +2,23 @@ import {
   formatResponseError,
   unknownResponseError,
 } from "@/features/common/response-error";
-import { ServerActionResponse } from "@/features/common/server-action-response";
-import { ensureGitHubEnvConfig } from "./env-service";
+import { ServerActionResponse, ServerActionSuccess } from "@/features/common/server-action-response";
+import {
+  ensureGitHubEnvConfig,
+  storageEnvConfig,
+  stringIsNullOrEmpty,
+  StorageConfig,
+  GitHubConfig,
+} from "./env-service";
 import {
   CopilotSeatsData,
   CopilotSeatManagementData,
+  CopilotSeatsWithRaw,
 } from "@/features/common/models";
 import { cosmosClient, cosmosConfiguration } from "./cosmos-db-service";
 import { format } from "date-fns";
 import { SqlQuerySpec } from "@azure/cosmos";
-import { stringIsNullOrEmpty } from "../utils/helpers";
+import { queryDb } from "./sqlite-db-service";
 
 export interface IFilter {
   date?: Date;
@@ -20,35 +27,114 @@ export interface IFilter {
   team: string;
 }
 
+// Update to use the interface from models.tsx
+export type CopilotSeatsWithRawData = CopilotSeatsWithRaw;
+
 export const getCopilotSeats = async (
   filter: IFilter
-): Promise<ServerActionResponse<CopilotSeatsData>> => {
-  const env = ensureGitHubEnvConfig();
-  const isCosmosConfig = cosmosConfiguration();
-
-  if (env.status !== "OK") {
-    return env;
+): Promise<ServerActionResponse<CopilotSeatsWithRawData>> => {
+  const storageConfig = storageEnvConfig();
+  if (storageConfig.status === "ERROR") {
+    return storageConfig;
   }
 
-  const { enterprise, organization } = env.response;
+  // Type assertion to ServerActionSuccess<StorageConfig>
+  const storageSuccessConfig = storageConfig as ServerActionSuccess<StorageConfig>;
+  const storageType = storageSuccessConfig.response.type;
+  
+  const env = ensureGitHubEnvConfig();
+  if (env.status === "ERROR") {
+    return env;
+  }
+  
+  // Type assertion to ServerActionSuccess<GitHubConfig>
+  const envSuccessConfig = env as ServerActionSuccess<GitHubConfig>;
+  const { enterprise, organization } = envSuccessConfig.response;
 
   try {
-    switch (process.env.GITHUB_API_SCOPE) {
-      case "enterprise":
-        if (stringIsNullOrEmpty(filter.enterprise)) {
-          filter.enterprise = enterprise;
+    // Use the storage type from configuration
+    if (storageType === 'cosmosdb' || storageType === 'sqlite') {
+      if (storageType === 'cosmosdb') {
+        const isCosmosConfig = cosmosConfiguration();
+        switch (process.env.GITHUB_API_SCOPE) {
+          case "enterprise":
+            if (stringIsNullOrEmpty(filter.enterprise)) {
+              filter.enterprise = enterprise || '';
+            }
+            break;
+          default:
+            if (stringIsNullOrEmpty(filter.organization)) {
+              filter.organization = organization || '';
+            }
+            break;
         }
-        break;
-      default:
-        if (stringIsNullOrEmpty(filter.organization)) {
-          filter.organization = organization;
+        if (isCosmosConfig) {
+          const result = await getCopilotSeatsFromDatabase(filter);
+          if (result.status === "OK" && result.response) {
+            return result;
+          }
         }
-        break;
+      } else {
+        // SQLite implementation
+        let query = "SELECT data FROM seats_history";
+        const whereConditions = [];
+        const params = [];
+        
+        // Add conditions to whereConditions array
+        if (filter.date) {
+          whereConditions.push("date = ?");
+          params.push(format(filter.date, "yyyy-MM-dd"));
+        }
+        
+        // Add enterprise filter if provided
+        if (!stringIsNullOrEmpty(filter.enterprise)) {
+          whereConditions.push("json_extract(data, '$.enterprise') = ?");
+          params.push(filter.enterprise);
+        }
+        
+        // Add organization filter if provided
+        if (!stringIsNullOrEmpty(filter.organization)) {
+          whereConditions.push("json_extract(data, '$.organization') = ?");
+          params.push(filter.organization);
+        }
+        
+        // Add WHERE clause if there are any conditions
+        if (whereConditions.length > 0) {
+          query += " WHERE " + whereConditions.join(" AND ");
+        }
+        
+        // Add ORDER BY clause at the end
+        if (!filter.date) {
+          // Get the most recent data if no date specified
+          query += " ORDER BY date DESC LIMIT 1";
+        }
+        
+        const result = await queryDb<{ data: string }>(query, params);
+        
+        if (result.status === "OK" && result.response.length > 0) {
+          return {
+            status: "OK",
+            response: JSON.parse(result.response[0].data) as CopilotSeatsData,
+          };
+        }
+      }
     }
-    if (isCosmosConfig) {
-      return getCopilotSeatsFromDatabase(filter);
+    
+    // If no database or no data in database, fall back to GitHub API
+    if (enterprise && !stringIsNullOrEmpty(filter.enterprise)) {
+      return getCopilotSeatsFromApi(filter);
     }
-    return getCopilotSeatsFromApi(filter);
+    else if (organization && !stringIsNullOrEmpty(filter.organization)) {
+      return getCopilotSeatsFromApi(filter);
+    } else {
+      // If no enterprise or organization is specified, return an error
+      return {
+        status: "ERROR",
+        errors: [{
+          message: "No enterprise or organization specified"
+        }]
+      };
+    }
   } catch (e) {
     return unknownResponseError(e);
   }
@@ -100,36 +186,48 @@ const getCopilotSeatsFromDatabase = async (
     })
     .fetchAll();
 
+  if (resources.length === 0) {
+    return {
+      status: "NOT_FOUND",
+      errors: [{ message: "No data found for the specified filter" }],
+    };
+  }
+
   return {
     status: "OK",
     response: resources[0],
   };
 };
 
-const getCopilotSeatsFromApi = async (
+// Export this function so it can be used by raw-data-service
+export const getCopilotSeatsFromApi = async (
   filter: IFilter
-): Promise<ServerActionResponse<CopilotSeatsData>> => {
+): Promise<ServerActionResponse<CopilotSeatsWithRawData>> => {
   const env = ensureGitHubEnvConfig();
 
   if (env.status !== "OK") {
     return env;
   }
 
-  let { token, version } = env.response;
+  const { enterprise, organization, token, version } = env.response;
 
-  try {
-    if (filter.enterprise) { 
-      const today = new Date();
-      const enterpriseSeats: CopilotSeatsData = {
-        enterprise: filter.enterprise,
-        seats: [],
-        total_seats: 0,
-        last_update: format(today, "yyyy-MM-ddTHH:mm:ss"),
-        date: format(today, "yyyy-MM-dd"),
-        id: `${today}-ENT-${filter.enterprise}`,
-        organization: null,
-      };
-
+  if (enterprise && !stringIsNullOrEmpty(filter.enterprise)) {
+    // Define with proper type that includes rawApiResponse
+    let enterpriseSeats: CopilotSeatsWithRawData = {
+      seats: [] as any[],
+      total_seats: 0,
+      last_update: format(new Date(), "yyyy-MM-ddTHH:mm:ss"),
+      date: format(new Date(), "yyyy-MM-dd"),
+      id: `${new Date()}-ENT-${filter.enterprise}`,
+      enterprise: filter.enterprise,
+      organization: null,
+      rawApiResponse: '',  // Initialize the property
+    };
+    
+    // Raw response will be stored here
+    const rawResponses: string[] = [];
+    
+    try {
       let url = `https://api.github.com/enterprises/${filter.enterprise}/copilot/billing/seats`;
       do {
         const enterpriseResponse = await fetch(url, {
@@ -137,7 +235,7 @@ const getCopilotSeatsFromApi = async (
           headers: {
             Accept: `application/vnd.github+json`,
             Authorization: `Bearer ${token}`,
-            "X-GitHub-Api-Version": version,
+            "X-GitHub-Api-Version": version || "2022-11-28",
           },
         });
 
@@ -145,31 +243,44 @@ const getCopilotSeatsFromApi = async (
           return formatResponseError(filter.enterprise, enterpriseResponse);
         }
 
-        const enterpriseData = await enterpriseResponse.json();
+        const enterpriseText = await enterpriseResponse.text();
+        rawResponses.push(enterpriseText);
+        
+        const enterpriseData = JSON.parse(enterpriseText);
         enterpriseSeats.seats.push(...enterpriseData.seats);
-        enterpriseSeats.total_seats = enterpriseData.total_seats;
+        enterpriseSeats.total_seats += enterpriseData.total_seats;
 
-        const linkHeader = enterpriseResponse.headers.get("Link");
-        url = getNextUrlFromLinkHeader(linkHeader) || "";
-      } while (!stringIsNullOrEmpty(url));
+        // Check if there's a 'next' link in the Link header
+        const linkHeader = enterpriseResponse.headers.get('link');
+        url = getNextUrlFromLinkHeader(linkHeader);
+      } while (url);
 
+      // Store the raw API response
+      enterpriseSeats.rawApiResponse = rawResponses.join('\n\n--- NEXT PAGE ---\n\n');
+      
       return {
         status: "OK",
-        response: enterpriseSeats as CopilotSeatsData,
+        response: enterpriseSeats
       };
+    } catch (e) {
+      return unknownResponseError(e);
     }
-    else {
-      const today = new Date();
-      const organizationSeats: CopilotSeatsData = {
-        organization: filter.organization,
-        seats: [],
-        total_seats: 0,
-        last_update: format(today, "yyyy-MM-ddTHH:mm:ss"),
-        date: format(today, "yyyy-MM-dd"),
-        id: `${today}-ORG-${filter.organization}`,
-        enterprise: null,
-      };
-
+  } else if (!stringIsNullOrEmpty(filter.organization)) {
+    // Define with proper type that includes rawApiResponse
+    let organizationSeats: CopilotSeatsWithRawData = {
+      seats: [] as any[],
+      total_seats: 0,
+      last_update: format(new Date(), "yyyy-MM-ddTHH:mm:ss"),
+      date: format(new Date(), "yyyy-MM-dd"),
+      id: `${new Date()}-ORG-${filter.organization}`,
+      enterprise: null,
+      organization: filter.organization,
+      rawApiResponse: '',  // Initialize the property
+    };
+    
+    const rawResponses: string[] = [];
+    
+    try {
       let url = `https://api.github.com/orgs/${filter.organization}/copilot/billing/seats`;
       do {
         const organizationResponse = await fetch(url, {
@@ -177,7 +288,7 @@ const getCopilotSeatsFromApi = async (
           headers: {
             Accept: `application/vnd.github+json`,
             Authorization: `Bearer ${token}`,
-            "X-GitHub-Api-Version": version,
+            "X-GitHub-Api-Version": version || "2022-11-28",
           },
         });
 
@@ -185,22 +296,34 @@ const getCopilotSeatsFromApi = async (
           return formatResponseError(filter.organization, organizationResponse);
         }
 
-        const organizationData = await organizationResponse.json();
+        const organizationText = await organizationResponse.text();
+        rawResponses.push(organizationText);
+        
+        const organizationData = JSON.parse(organizationText);
         organizationSeats.seats.push(...organizationData.seats);
-        organizationSeats.total_seats = organizationData.total_seats;
+        organizationSeats.total_seats += organizationData.total_seats;
 
-        const linkHeader = organizationResponse.headers.get("Link");
-        url = getNextUrlFromLinkHeader(linkHeader) || "";
-      } while (!stringIsNullOrEmpty(url));
+        // Check if there's a 'next' link in the Link header
+        const linkHeader = organizationResponse.headers.get('link');
+        url = getNextUrlFromLinkHeader(linkHeader);
+      } while (url);
 
+      // Store the raw API response
+      organizationSeats.rawApiResponse = rawResponses.join('\n\n--- NEXT PAGE ---\n\n');
+      
       return {
         status: "OK",
-        response: organizationSeats as CopilotSeatsData,
+        response: organizationSeats
       };
+    } catch (e) {
+      return unknownResponseError(e);
     }
-  } catch (e) {
-    return unknownResponseError(e);
   }
+
+  return {
+    status: "ERROR",
+    errors: [{ message: "No enterprise or organization specified" }],
+  };
 };
 
 export const getCopilotSeatsManagement = async (
@@ -218,12 +341,12 @@ export const getCopilotSeatsManagement = async (
     switch (process.env.GITHUB_API_SCOPE) {
       case "enterprise":
         if (stringIsNullOrEmpty(filter.enterprise)) {
-          filter.enterprise = enterprise;
+          filter.enterprise = enterprise || '';
         }
         break;
       default:
         if (stringIsNullOrEmpty(filter.organization)) {
-          filter.organization = organization;
+          filter.organization = organization || '';
         }
         break;
     }
@@ -275,8 +398,8 @@ export const getCopilotSeatsManagement = async (
   }
 };
 
-const getNextUrlFromLinkHeader = (linkHeader: string | null): string | null => {
-  if (!linkHeader) return null;
+const getNextUrlFromLinkHeader = (linkHeader: string | null): string => {
+  if (!linkHeader) return "";
 
   const links = linkHeader.split(',');
   for (const link of links) {
@@ -285,5 +408,5 @@ const getNextUrlFromLinkHeader = (linkHeader: string | null): string | null => {
       return match[1];
     }
   }
-  return null;
+  return "";
 }

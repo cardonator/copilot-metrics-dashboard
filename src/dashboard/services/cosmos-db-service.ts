@@ -22,3 +22,18 @@ export const cosmosConfiguration = (): boolean => {
     endpoint.trim() !== ""
   );
 };
+
+// New function to determine which database to use
+export const getDatabaseType = (): 'cosmos' | 'sqlite' | null => {
+  if (cosmosConfiguration()) {
+    return 'cosmos';
+  }
+  
+  // Import dynamically to avoid circular dependencies
+  const { sqliteConfiguration } = require('./sqlite-db-service');
+  if (sqliteConfiguration()) {
+    return 'sqlite';
+  }
+  
+  return null;
+};

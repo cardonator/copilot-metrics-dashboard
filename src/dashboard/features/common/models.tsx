@@ -52,10 +52,10 @@ export interface GitHubOrganization {
 }
 
 export interface SeatAssignment {
-    created_at: Date;
-    updated_at: Date;
-    pending_cancellation_date: Date | null;
-    last_activity_at: Date;
+    created_at: string | Date;
+    updated_at: string | Date;
+    pending_cancellation_date: string | Date | null;
+    last_activity_at: string | Date;
     last_activity_editor: string;
     plan_type: string;
     assignee: GitHubUser;
@@ -71,6 +71,7 @@ export interface CopilotSeatsData {
     enterprise: string | null;
     organization: string | null;
     last_update: string | null;
+    rawApiResponse?: string; // Add this field to store raw API response
 }
 
 export interface CopilotSeatManagementData {
@@ -203,3 +204,11 @@ export interface SeatBreakdown {
     copilot_dotcom_chat: CopilotDotcomChatMetrics;
     copilot_dotcom_pull_requests: CopilotDotcomPullRequestsMetrics;
   }
+
+export interface CopilotMetricsWithRaw extends Array<CopilotUsageOutput> {
+  rawApiResponse?: string;
+}
+
+export interface CopilotSeatsWithRaw extends CopilotSeatsData {
+  rawApiResponse?: string;
+}

@@ -1,0 +1,46 @@
+# Node.js dependencies in any directory
+**/node_modules/
+
+# Git files
+.git/
+.gitignore
+.github/
+
+# Build output and temp files
+**/.next/
+**/dist/
+**/build/
+**/.cache/
+**/tmp/
+**/*.log
+
+# Development files
+**/.env*
+!**/.env.example
+**/.vscode/
+**/.idea/
+**/*.swp
+**/*.swo
+
+# Test files
+**/__tests__/
+**/test/
+**/tests/
+**/*.test.*
+**/*.spec.*
+
+# Documentation
+**/docs/
+**/README.md
+LICENSE
+*.md
+!DOCKER.md
+
+# Local database files
+**/*.db
+**/*.sqlite
+
+# Docker related files (to prevent recursive copying)
+Dockerfile
+docker-compose.yml
+.dockerignore

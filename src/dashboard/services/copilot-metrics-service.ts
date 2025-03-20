@@ -9,10 +9,11 @@ import {
 import { ServerActionResponse } from "@/features/common/server-action-response";
 import { SqlQuerySpec } from "@azure/cosmos";
 import { format } from "date-fns";
-import { cosmosClient, cosmosConfiguration } from "./cosmos-db-service";
+import { cosmosClient, cosmosConfiguration, getDatabaseType } from "./cosmos-db-service";
 import { ensureGitHubEnvConfig } from "./env-service";
 import { stringIsNullOrEmpty, applyTimeFrameLabel } from "../utils/helpers";
 import { sampleData } from "./sample-data";
+import { queryDb } from "./sqlite-db-service";
 
 export interface IFilter {
   startDate?: Date;
@@ -25,30 +26,77 @@ export interface IFilter {
 export const getCopilotMetrics = async (
   filter: IFilter
 ): Promise<ServerActionResponse<CopilotUsageOutput[]>> => {
-  const env = ensureGitHubEnvConfig();
-  const isCosmosConfig = cosmosConfiguration();
-
-  if (env.status !== "OK") {
-    return env;
-  }
-
-  const { enterprise, organization } = env.response;
+  
+  const databaseType = getDatabaseType();
+  
 
   try {
+    // If we have a database configured, try to use it first
+    if (databaseType === 'cosmos' || databaseType === 'sqlite') {
+      if (databaseType === 'cosmos') {
+        return getCopilotMetricsFromDatabase(filter);
+      } else {
+        // New SQLite implementation
+        let query = "SELECT data FROM metrics_history";
+        const params = [];
+        
+        // Add date filter if provided
+        if (filter.startDate && filter.endDate) {
+          query += " WHERE date BETWEEN ? AND ?";
+          params.push(
+            format(filter.startDate, "yyyy-MM-dd"), 
+            format(filter.endDate, "yyyy-MM-dd")
+          );
+        }
+        
+        // Add enterprise filter if provided
+        if (!stringIsNullOrEmpty(filter.enterprise)) {
+          const jsonCondition = `json_extract(data, '$.enterprise') = ?`;
+          query += params.length ? ` AND ${jsonCondition}` : ` WHERE ${jsonCondition}`;
+          params.push(filter.enterprise);
+        }
+        
+        // Add organization filter if provided
+        if (!stringIsNullOrEmpty(filter.organization)) {
+          const jsonCondition = `json_extract(data, '$.organization') = ?`;
+          query += params.length ? ` AND ${jsonCondition}` : ` WHERE ${jsonCondition}`;
+          params.push(filter.organization);
+        }
+        
+        // Order by date
+        query += " ORDER BY date DESC";
+        
+        const result = await queryDb<{ data: string }>(query, params);
+        
+        if (result.status === "OK" && result.response.length > 0) {
+          const metricsData = result.response.map(item => JSON.parse(item.data) as CopilotMetrics);
+          return {
+            status: "OK",
+            response: applyTimeFrameLabel(metricsData),
+          };
+        }
+      }
+    }
+
+    // Fall back to GitHub API if no database or database query returned no results
+    const env = ensureGitHubEnvConfig();
+    
+    if (env.status !== "OK") {
+      return env;
+    }
+
+    const { enterprise, organization } = env.response;
     switch (process.env.GITHUB_API_SCOPE) {
       case "enterprise":
         if (stringIsNullOrEmpty(filter.enterprise)) {
-          filter.enterprise = enterprise;
+          filter.enterprise = enterprise || '';
         }
         break;
       default:
         if (stringIsNullOrEmpty(filter.organization)) {
-          filter.organization = organization;
+          filter.organization = organization || '';
         }
         break;
-    }
-    if (isCosmosConfig) {
-      return getCopilotMetricsFromDatabase(filter);
     }
     return getCopilotMetricsFromApi(filter);
   } catch (e) {
@@ -75,8 +123,19 @@ const fetchCopilotMetrics = async (
     return formatResponseError(entityName, response);
   }
 
-  const data = await response.json();
+  // Get the raw text to preserve it
+  const rawResponse = await response.text();
+  
+  // Parse the response
+  const data = JSON.parse(rawResponse);
   const dataWithTimeFrame = applyTimeFrameLabel(data);
+  
+  // Add the raw response to the result
+  Object.defineProperty(dataWithTimeFrame, 'rawApiResponse', {
+    enumerable: true,
+    value: rawResponse
+  });
+  
   return {
     status: "OK",
     response: dataWithTimeFrame,
@@ -108,10 +167,10 @@ export const getCopilotMetricsFromApi = async (
 
     if (filter.enterprise) {
       const url = `https://api.github.com/enterprises/${filter.enterprise}/copilot/metrics${queryString}`;
-      return fetchCopilotMetrics(url, token, version, filter.enterprise);
+      return fetchCopilotMetrics(url, token, version, filter.enterprise || '');
     } else {
       const url = `https://api.github.com/orgs/${filter.organization}/copilot/metrics${queryString}`;
-      return fetchCopilotMetrics(url, token, version, filter.organization);
+      return fetchCopilotMetrics(url, token, version, filter.organization || '');
     }
   } catch (e) {
     return unknownResponseError(e);
