@@ -144,3 +144,189 @@ func (c *CopilotMetricsClient) LoadTestMetrics(team string) ([]models.Metrics, e
 
 	return metrics, nil
 }
+
+// GetCopilotUsageFromMetrics converts metrics to usage format
+func (c *CopilotMetricsClient) GetCopilotUsageFromMetrics(metrics []models.Metrics) ([]models.CopilotUsage, error) {
+	usagesByDay := make(map[string]*models.CopilotUsage)
+
+	// Convert metrics to usage format
+	for _, metric := range metrics {
+		var breakdown []models.UsageBreakdown
+		totalSuggestionsCount := 0
+		totalAcceptancesCount := 0
+		totalLinesSuggested := 0
+		totalLinesAccepted := 0
+		totalActiveUsers := 0
+		totalChatAcceptances := 0
+		totalChatTurns := 0
+		totalActiveChatUsers := 0
+
+		// Set total engaged users from the metrics
+		if metric.TotalEngagedUsers > 0 {
+			totalActiveUsers = metric.TotalEngagedUsers
+		}
+
+		// Sum up code completion metrics from all editors and languages
+		if metric.CopilotIdeCodeCompletions != nil {
+			// Track unique users across all editors and languages
+			if metric.CopilotIdeCodeCompletions.TotalEngagedUsers > 0 {
+				totalActiveUsers = metric.CopilotIdeCodeCompletions.TotalEngagedUsers
+			}
+
+			for _, editor := range metric.CopilotIdeCodeCompletions.Editors {
+				for _, model := range editor.Models {
+					for _, language := range model.Languages {
+						// Add breakdown by language/editor
+						usageBreakdown := models.UsageBreakdown{
+							Day:              metric.Date,
+							Language:         language.Name,
+							Editor:           editor.Name,
+							SuggestionsCount: language.TotalCodeSuggestions,
+							AcceptancesCount: language.TotalCodeAcceptances,
+							LinesSuggested:   language.TotalCodeLinesSuggested,
+							LinesAccepted:    language.TotalCodeLinesAccepted,
+							ActiveUsers:      language.TotalEngagedUsers,
+							Enterprise:       metric.Enterprise,
+							Organization:     metric.Organization,
+							Team:             metric.Team,
+						}
+						breakdown = append(breakdown, usageBreakdown)
+
+						// Aggregate totals
+						totalSuggestionsCount += language.TotalCodeSuggestions
+						totalAcceptancesCount += language.TotalCodeAcceptances
+						totalLinesSuggested += language.TotalCodeLinesSuggested
+						totalLinesAccepted += language.TotalCodeLinesAccepted
+					}
+				}
+			}
+		}
+
+		// Get chat data
+		if metric.IdeChat != nil {
+			totalActiveChatUsers = metric.IdeChat.TotalEngagedUsers
+
+			for _, editor := range metric.IdeChat.Editors {
+				for _, model := range editor.Models {
+					if model.TotalChats > 0 {
+						totalChatTurns += model.TotalChats
+					}
+					if model.TotalChatCopyEvents > 0 {
+						totalChatAcceptances += model.TotalChatCopyEvents
+					}
+					if model.TotalChatInsertionEvents > 0 {
+						totalChatAcceptances += model.TotalChatInsertionEvents
+					}
+				}
+			}
+		}
+
+		// Add chat data from GitHub.com
+		if metric.DotComChat != nil && metric.DotComChat.TotalEngagedUsers > 0 {
+			totalActiveChatUsers += metric.DotComChat.TotalEngagedUsers
+
+			for _, model := range metric.DotComChat.Models {
+				if model.TotalChats > 0 {
+					totalChatTurns += model.TotalChats
+				}
+			}
+		}
+
+		// Get or create usage record for this date
+		usage, exists := usagesByDay[metric.Date]
+		if !exists {
+			usage = &models.CopilotUsage{
+				ID:                    "", // Will be set below
+				Day:                   metric.Date,
+				Organization:          metric.Organization,
+				Enterprise:            metric.Enterprise,
+				Team:                  metric.Team,
+				LastUpdate:            time.Now().UTC(),
+				TotalSuggestionsCount: totalSuggestionsCount,
+				TotalAcceptancesCount: totalAcceptancesCount,
+				TotalLinesSuggested:   totalLinesSuggested,
+				TotalLinesAccepted:    totalLinesAccepted,
+				TotalActiveUsers:      totalActiveUsers,
+				TotalChatAcceptances:  totalChatAcceptances,
+				TotalChatTurns:        totalChatTurns,
+				TotalActiveChatUsers:  totalActiveChatUsers,
+				Breakdown:             []models.UsageBreakdown{},
+			}
+			usagesByDay[metric.Date] = usage
+		} else {
+			// Increment existing totals
+			usage.TotalSuggestionsCount += totalSuggestionsCount
+			usage.TotalAcceptancesCount += totalAcceptancesCount
+			usage.TotalLinesSuggested += totalLinesSuggested
+			usage.TotalLinesAccepted += totalLinesAccepted
+			usage.TotalChatAcceptances += totalChatAcceptances
+			usage.TotalChatTurns += totalChatTurns
+
+			// Take the max value for users to avoid double counting
+			if totalActiveUsers > usage.TotalActiveUsers {
+				usage.TotalActiveUsers = totalActiveUsers
+			}
+			if totalActiveChatUsers > usage.TotalActiveChatUsers {
+				usage.TotalActiveChatUsers = totalActiveChatUsers
+			}
+		}
+
+		// Add breakdowns to usage
+		usage.Breakdown = append(usage.Breakdown, breakdown...)
+	}
+
+	// Convert map to array and set IDs
+	var result []models.CopilotUsage
+	for _, usage := range usagesByDay {
+		usage.ID = usage.GetID()
+		result = append(result, *usage)
+	}
+
+	return result, nil
+}
+
+// LoadTestUsageData loads test usage data by transforming test metrics data
+func (c *CopilotMetricsClient) LoadTestUsageData() ([]models.CopilotUsage, error) {
+	// Get test metrics data
+	metrics, err := c.LoadTestMetrics("")
+	if err != nil {
+		return nil, err
+	}
+
+	// Convert to usage format
+	return c.GetCopilotUsageFromMetrics(metrics)
+}
+
+// GetCopilotUsageForEnterprise generates Copilot usage data for an enterprise from metrics
+func (c *CopilotMetricsClient) GetCopilotUsageForEnterprise(enterprise string) ([]models.CopilotUsage, error) {
+	// Get metrics data first
+	metrics, err := c.GetCopilotMetricsForEnterprise(enterprise, "")
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch metrics: %w", err)
+	}
+
+	// Convert metrics to usage format
+	usages, err := c.GetCopilotUsageFromMetrics(metrics)
+	if err != nil {
+		return nil, fmt.Errorf("failed to convert metrics to usage: %w", err)
+	}
+
+	return usages, nil
+}
+
+// GetCopilotUsageForOrganization generates Copilot usage data for an organization from metrics
+func (c *CopilotMetricsClient) GetCopilotUsageForOrganization(organization string) ([]models.CopilotUsage, error) {
+	// Get metrics data first
+	metrics, err := c.GetCopilotMetricsForOrganization(organization, "")
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch metrics: %w", err)
+	}
+
+	// Convert metrics to usage format
+	usages, err := c.GetCopilotUsageFromMetrics(metrics)
+	if err != nil {
+		return nil, fmt.Errorf("failed to convert metrics to usage: %w", err)
+	}
+
+	return usages, nil
+}

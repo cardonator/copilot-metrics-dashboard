@@ -149,3 +149,11 @@ export const stringIsNullOrEmpty = (str: string | null | undefined) => {
 export const validateScope = (str: string | null | undefined) => {
   return str !== "enterprise" && str !== "organization";
 };
+
+/**
+ * Returns a fixed domain of [0, 100] for percentage-based charts
+ * This ensures consistency across all percentage visualizations
+ */
+export const getPercentageAxisDomain = () => {
+  return [0, 100];
+};

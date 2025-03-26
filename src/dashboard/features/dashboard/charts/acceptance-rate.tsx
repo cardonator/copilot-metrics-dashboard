@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/chart";
 
 import { AcceptanceRateData, computeAcceptanceAverage } from "./common";
+import { getPercentageAxisDomain } from "@/services/env-service";
 
 import { ChartHeader } from "./chart-header";
 
@@ -37,6 +38,7 @@ export const AcceptanceRate = () => {
               axisLine={false}
               tickMargin={8}
               allowDataOverflow
+              domain={getPercentageAxisDomain()}
             />
             <XAxis
               dataKey={chartConfig.timeFrameDisplay.key}

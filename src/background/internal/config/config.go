@@ -3,6 +3,7 @@ package config
 import (
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/joho/godotenv"
@@ -19,18 +20,19 @@ const (
 
 // Config holds the application configuration
 type Config struct {
-	GithubToken        string
-	GithubApiBaseUrl   string
-	GithubApiVersion   string
-	GithubApiScope     string
-	GithubEnterprise   string
-	GithubOrganization string
-	CosmosDBEndpoint   string
-	CosmosDBKey        string
-	Teams              []string
-	UseTestData        bool
-	StorageType        StorageType
-	SQLitePath         string
+	GithubToken            string
+	GithubApiBaseUrl       string
+	GithubApiVersion       string
+	GithubApiScope         string
+	GithubEnterprise       string
+	GithubOrganization     string
+	CosmosDBEndpoint       string
+	CosmosDBKey            string
+	Teams                  []string
+	UseTestData            bool
+	StorageType            StorageType
+	SQLitePath             string
+	MetricsScheduleSeconds int // Interval in seconds for metrics collection
 }
 
 // Load loads the configuration from environment variables
@@ -96,6 +98,24 @@ func Load(logger *zap.Logger) (*Config, error) {
 		config.StorageType = StorageCosmos
 	}
 
+	// Get metrics schedule interval in seconds (default: 3600 seconds = 1 hour)
+	metricsScheduleSeconds := 3600 // Default: 1 hour in seconds
+	if scheduleStr := os.Getenv("METRICS_SCHEDULE_SECONDS"); scheduleStr != "" {
+		seconds, err := strconv.Atoi(scheduleStr)
+		if err != nil {
+			logger.Warn("Invalid METRICS_SCHEDULE_SECONDS, using default",
+				zap.String("value", scheduleStr),
+				zap.Int("default_seconds", 3600))
+		} else if seconds <= 0 {
+			logger.Warn("METRICS_SCHEDULE_SECONDS must be positive, using default",
+				zap.Int("value", seconds),
+				zap.Int("default_seconds", 3600))
+		} else {
+			metricsScheduleSeconds = seconds
+			logger.Info("Using custom metrics schedule interval", zap.Int("seconds", metricsScheduleSeconds))
+		}
+	}
+
 	// Validate required configuration
 	if config.GithubToken == "" {
 		logger.Warn("GITHUB_TOKEN not set")
@@ -118,6 +138,8 @@ func Load(logger *zap.Logger) (*Config, error) {
 			logger.Warn("AZURE_COSMOSDB_KEY not set")
 		}
 	}
+
+	config.MetricsScheduleSeconds = metricsScheduleSeconds
 
 	return config, nil
 }

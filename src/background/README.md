@@ -25,6 +25,7 @@ The application is configured through environment variables:
 - `GITHUB_METRICS_TEAMS` - Comma-separated list of teams to collect metrics for
 - `GITHUB_METRICS_USE_TESTDATA` - Set to "true" to use test data instead of calling the GitHub API
 - `ENABLE_SEATS_INGESTION` - Set to "false" to disable seats ingestion
+- `METRICS_SCHEDULE_SECONDS` - Interval in seconds for metrics collection (default: 3600, which is 1 hour)
 
 You can set these variables in a `.env` file in the project root.
 
@@ -43,7 +44,7 @@ CGO_ENABLED=0 go build -o dataingestion ./cmd/dataingestion
 
 The application will:
 1. Collect metrics, seats, and usage data immediately upon startup
-2. Schedule hourly collection of this data
+2. Schedule collection of this data at the configured interval (default: hourly)
 3. Store the data in the configured storage (Azure Cosmos DB or SQLite)
 
 ## Development
@@ -58,6 +59,12 @@ To use SQLite instead of Cosmos DB:
 
 ```bash
 STORAGE_TYPE=sqlite ./dataingestion
+```
+
+To change the metrics collection interval to 5 minutes (300 seconds):
+
+```bash
+METRICS_SCHEDULE_SECONDS=300 ./dataingestion
 ```
 
 The test data is located in the `testdata/` directory.

@@ -138,3 +138,47 @@ type DotComPullRequestRepositoryModel struct {
 	TotalEngagedUsers       int     `json:"total_engaged_users"`
 	TotalPrSummariesCreated int     `json:"total_pr_summaries_created"`
 }
+
+// CopilotUsage represents GitHub Copilot usage statistics
+type CopilotUsage struct {
+	ID                    string           `json:"id,omitempty"`
+	Day                   string           `json:"day"`
+	Enterprise            string           `json:"enterprise,omitempty"`
+	Organization          string           `json:"organization,omitempty"`
+	Team                  string           `json:"team,omitempty"`
+	LastUpdate            time.Time        `json:"last_update"`
+	TotalSuggestionsCount int              `json:"total_suggestions_count"`
+	TotalAcceptancesCount int              `json:"total_acceptances_count"`
+	TotalLinesSuggested   int              `json:"total_lines_suggested"`
+	TotalLinesAccepted    int              `json:"total_lines_accepted"`
+	TotalActiveUsers      int              `json:"total_active_users"`
+	TotalChatAcceptances  int              `json:"total_chat_acceptances"`
+	TotalChatTurns        int              `json:"total_chat_turns"`
+	TotalActiveChatUsers  int              `json:"total_active_chat_users"`
+	Breakdown             []UsageBreakdown `json:"breakdown"`
+}
+
+// GetID generates an ID for the usage data
+func (c *CopilotUsage) GetID() string {
+	if c.Organization != "" {
+		return fmt.Sprintf("%s-ORG-%s", c.Day, c.Organization)
+	} else if c.Enterprise != "" {
+		return fmt.Sprintf("%s-ENT-%s", c.Day, c.Enterprise)
+	}
+	return fmt.Sprintf("%s-XXX", c.Day)
+}
+
+// UsageBreakdown represents usage statistics broken down by language and editor
+type UsageBreakdown struct {
+	Day              string `json:"day"`
+	Language         string `json:"language"`
+	Editor           string `json:"editor"`
+	SuggestionsCount int    `json:"suggestions_count"`
+	AcceptancesCount int    `json:"acceptances_count"`
+	LinesSuggested   int    `json:"lines_suggested"`
+	LinesAccepted    int    `json:"lines_accepted"`
+	ActiveUsers      int    `json:"active_users"`
+	Enterprise       string `json:"enterprise,omitempty"`
+	Organization     string `json:"organization,omitempty"`
+	Team             string `json:"team,omitempty"`
+}

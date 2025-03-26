@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/chart";
 
 import { ChatAcceptanceRateData, computeChatAcceptanceAverage } from "./common";
+import { getPercentageAxisDomain } from "@/services/env-service";
 
 import { ChartHeader } from "./chart-header";
 
@@ -37,7 +38,7 @@ export const ChatAcceptanceRate = () => {
               axisLine={false}
               tickMargin={8}
               allowDataOverflow
-              domain={[0, 100]} // Set domain from 0 to 100
+              domain={getPercentageAxisDomain()} // Using the constant domain function
             />
             <XAxis
               dataKey={chartConfig.timeFrameDisplay.key}

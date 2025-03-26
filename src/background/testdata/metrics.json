@@ -1,154 +1,1568 @@
 [
-    {
-      "date": "2024-06-24",
-      "total_active_users": 24,
-      "total_engaged_users": 20,
-      "copilot_ide_code_completions": {
-        "total_engaged_users": 20,
-        "languages": [
-          {
-            "name": "python",
-            "total_engaged_users": 10
-          },
-          {
-            "name": "ruby",
-            "total_engaged_users": 10
-          }
-        ],
-        "editors": [
-          {
-            "name": "vscode",
-            "total_engaged_users": 13,
-            "models": [
-              {
-                "name": "default",
-                "is_custom_model": false,
-                "custom_model_training_date": null,
-                "total_engaged_users": 13,
-                "languages": [
-                  {
-                    "name": "python",
-                    "total_engaged_users": 6,
-                    "total_code_suggestions": 249,
-                    "total_code_acceptances": 123,
-                    "total_code_lines_suggested": 225,
-                    "total_code_lines_accepted": 135
-                  },
-                  {
-                    "name": "ruby",
-                    "total_engaged_users": 7,
-                    "total_code_suggestions": 496,
-                    "total_code_acceptances": 253,
-                    "total_code_lines_suggested": 520,
-                    "total_code_lines_accepted": 270
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "name": "neovim",
-            "total_engaged_users": 7,
-            "models": [
-              {
-                "name": "a-custom-model",
-                "is_custom_model": true,
-                "custom_model_training_date": "2024-02-01",
-                "total_engaged_users": 4,
-                "languages": [
-                  {
-                    "name": "typescript",
-                    "total_engaged_users": 3,
-                    "total_code_suggestions": 112,
-                    "total_code_acceptances": 56,
-                    "total_code_lines_suggested": 143,
-                    "total_code_lines_accepted": 61
-                  },
-                  {
-                    "name": "go",
-                    "total_engaged_users": 4,
-                    "total_code_suggestions": 132,
-                    "total_code_acceptances": 67,
-                    "total_code_lines_suggested": 154,
-                    "total_code_lines_accepted": 72
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
+  {
+      "date": "2025-02-27",
       "copilot_ide_chat": {
-        "total_engaged_users": 13,
-        "editors": [
-          {
-            "name": "vscode",
-            "total_engaged_users": 13,
-            "models": [
+          "editors": [
               {
-                "name": "default",
-                "is_custom_model": false,
-                "custom_model_training_date": null,
-                "total_engaged_users": 12,
-                "total_chats": 45,
-                "total_chat_insertion_events": 12,
-                "total_chat_copy_events": 16
+                  "name": "JetBrains",
+                  "models": [
+                      {
+                          "name": "default",
+                          "total_chats": 156,
+                          "is_custom_model": false,
+                          "total_engaged_users": 21,
+                          "total_chat_copy_events": 92,
+                          "total_chat_insertion_events": 47
+                      }
+                  ],
+                  "total_engaged_users": 21
               },
               {
-                "name": "a-custom-model",
-                "is_custom_model": true,
-                "custom_model_training_date": "2024-02-01",
-                "total_engaged_users": 1,
-                "total_chats": 10,
-                "total_chat_insertion_events": 11,
-                "total_chat_copy_events": 3
+                  "name": "vscode",
+                  "models": [
+                      {
+                          "name": "default",
+                          "total_chats": 243,
+                          "is_custom_model": false,
+                          "total_engaged_users": 31,
+                          "total_chat_copy_events": 78,
+                          "total_chat_insertion_events": 14
+                      }
+                  ],
+                  "total_engaged_users": 31
               }
-            ]
-          }
-        ]
+          ],
+          "total_engaged_users": 49
       },
+      "total_active_users": 93,
       "copilot_dotcom_chat": {
-        "total_engaged_users": 14,
-        "models": [
-          {
-            "name": "default",
-            "is_custom_model": false,
-            "custom_model_training_date": null,
-            "total_engaged_users": 14,
-            "total_chats": 38
-          }
-        ]
+          "models": [
+              {
+                  "name": "default",
+                  "total_chats": 23,
+                  "is_custom_model": false,
+                  "total_engaged_users": 12
+              }
+          ],
+          "total_engaged_users": 12
       },
+      "total_engaged_users": 84,
       "copilot_dotcom_pull_requests": {
-        "total_engaged_users": 12,
-        "repositories": [
-          {
-            "name": "demo/repo1",
-            "total_engaged_users": 8,
-            "models": [
+          "repositories": [
               {
-                "name": "default",
-                "is_custom_model": false,
-                "custom_model_training_date": null,
-                "total_pr_summaries_created": 6,
-                "total_engaged_users": 8
+                  "name": "digicert/snowbird",
+                  "models": [
+                      {
+                          "name": "default",
+                          "is_custom_model": false,
+                          "total_engaged_users": 5,
+                          "total_pr_summaries_created": 7
+                      }
+                  ],
+                  "total_engaged_users": 5
               }
-            ]
-          },
-          {
-            "name": "demo/repo2",
-            "total_engaged_users": 4,
-            "models": [
+          ],
+          "total_engaged_users": 5
+      },
+      "copilot_ide_code_completions": {
+          "editors": [
               {
-                "name": "a-custom-model",
-                "is_custom_model": true,
-                "custom_model_training_date": "2024-02-01",
-                "total_pr_summaries_created": 10,
-                "total_engaged_users": 4
+                  "name": "vscode",
+                  "models": [
+                      {
+                          "name": "default",
+                          "languages": [
+                              {
+                                  "name": "unknown",
+                                  "total_engaged_users": 8,
+                                  "total_code_acceptances": 172,
+                                  "total_code_suggestions": 328,
+                                  "total_code_lines_accepted": 531,
+                                  "total_code_lines_suggested": 947
+                              },
+                              {
+                                  "name": "svelte",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 9,
+                                  "total_code_suggestions": 37,
+                                  "total_code_lines_accepted": 11,
+                                  "total_code_lines_suggested": 102
+                              },
+                              {
+                                  "name": "go",
+                                  "total_engaged_users": 6,
+                                  "total_code_acceptances": 84,
+                                  "total_code_suggestions": 243,
+                                  "total_code_lines_accepted": 97,
+                                  "total_code_lines_suggested": 334
+                              },
+                              {
+                                  "name": "yaml",
+                                  "total_engaged_users": 3,
+                                  "total_code_acceptances": 24,
+                                  "total_code_suggestions": 110,
+                                  "total_code_lines_accepted": 80,
+                                  "total_code_lines_suggested": 239
+                              },
+                              {
+                                  "name": "shellscript",
+                                  "total_engaged_users": 3,
+                                  "total_code_acceptances": 24,
+                                  "total_code_suggestions": 101,
+                                  "total_code_lines_accepted": 60,
+                                  "total_code_lines_suggested": 197
+                              },
+                              {
+                                  "name": "ini",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 2,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 2
+                              },
+                              {
+                                  "name": "typescriptreact",
+                                  "total_engaged_users": 9,
+                                  "total_code_acceptances": 75,
+                                  "total_code_suggestions": 288,
+                                  "total_code_lines_accepted": 69,
+                                  "total_code_lines_suggested": 435
+                              },
+                              {
+                                  "name": "html",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 4,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 16
+                              },
+                              {
+                                  "name": "terraform",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 1,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 1
+                              },
+                              {
+                                  "name": "cpp",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 64,
+                                  "total_code_suggestions": 141,
+                                  "total_code_lines_accepted": 192,
+                                  "total_code_lines_suggested": 563
+                              },
+                              {
+                                  "name": "java",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 19,
+                                  "total_code_suggestions": 38,
+                                  "total_code_lines_accepted": 34,
+                                  "total_code_lines_suggested": 206
+                              },
+                              {
+                                  "name": "makefile",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 2,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 2
+                              },
+                              {
+                                  "name": "typescript",
+                                  "total_engaged_users": 4,
+                                  "total_code_acceptances": 21,
+                                  "total_code_suggestions": 57,
+                                  "total_code_lines_accepted": 22,
+                                  "total_code_lines_suggested": 95
+                              },
+                              {
+                                  "name": "scss",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 17,
+                                  "total_code_suggestions": 45,
+                                  "total_code_lines_accepted": 22,
+                                  "total_code_lines_suggested": 90
+                              },
+                              {
+                                  "name": "javascriptreact",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 3,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 3
+                              },
+                              {
+                                  "name": "json",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 5,
+                                  "total_code_suggestions": 40,
+                                  "total_code_lines_accepted": 5,
+                                  "total_code_lines_suggested": 51
+                              },
+                              {
+                                  "name": "python",
+                                  "total_engaged_users": 3,
+                                  "total_code_acceptances": 12,
+                                  "total_code_suggestions": 34,
+                                  "total_code_lines_accepted": 8,
+                                  "total_code_lines_suggested": 40
+                              },
+                              {
+                                  "name": "jsonc",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 2,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 2
+                              },
+                              {
+                                  "name": "javascript",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 1,
+                                  "total_code_suggestions": 2,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 2
+                              },
+                              {
+                                  "name": "dockerfile",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 1,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 1
+                              }
+                          ],
+                          "is_custom_model": false,
+                          "total_engaged_users": 36
+                      }
+                  ],
+                  "total_engaged_users": 36
+              },
+              {
+                  "name": "VisualStudio",
+                  "models": [
+                      {
+                          "name": "default",
+                          "languages": [
+                              {
+                                  "name": "cpp",
+                                  "total_engaged_users": 4,
+                                  "total_code_acceptances": 42,
+                                  "total_code_suggestions": 89,
+                                  "total_code_lines_accepted": 76,
+                                  "total_code_lines_suggested": 231
+                              }
+                          ],
+                          "is_custom_model": false,
+                          "total_engaged_users": 4
+                      }
+                  ],
+                  "total_engaged_users": 4
+              },
+              {
+                  "name": "JetBrains",
+                  "models": [
+                      {
+                          "name": "default",
+                          "languages": [
+                              {
+                                  "name": "python",
+                                  "total_engaged_users": 5,
+                                  "total_code_acceptances": 18,
+                                  "total_code_suggestions": 34,
+                                  "total_code_lines_accepted": 25,
+                                  "total_code_lines_suggested": 47
+                              },
+                              {
+                                  "name": "php",
+                                  "total_engaged_users": 4,
+                                  "total_code_acceptances": 24,
+                                  "total_code_suggestions": 114,
+                                  "total_code_lines_accepted": 28,
+                                  "total_code_lines_suggested": 278
+                              },
+                              {
+                                  "name": "sql",
+                                  "total_engaged_users": 6,
+                                  "total_code_acceptances": 16,
+                                  "total_code_suggestions": 58,
+                                  "total_code_lines_accepted": 28,
+                                  "total_code_lines_suggested": 103
+                              },
+                              {
+                                  "name": "shellscript",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 11,
+                                  "total_code_suggestions": 29,
+                                  "total_code_lines_accepted": 15,
+                                  "total_code_lines_suggested": 63
+                              },
+                              {
+                                  "name": "markdown",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 11,
+                                  "total_code_suggestions": 16,
+                                  "total_code_lines_accepted": 11,
+                                  "total_code_lines_suggested": 24
+                              },
+                              {
+                                  "name": "java",
+                                  "total_engaged_users": 21,
+                                  "total_code_acceptances": 376,
+                                  "total_code_suggestions": 855,
+                                  "total_code_lines_accepted": 757,
+                                  "total_code_lines_suggested": 3899
+                              },
+                              {
+                                  "name": "unknown",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 2,
+                                  "total_code_suggestions": 6,
+                                  "total_code_lines_accepted": 4,
+                                  "total_code_lines_suggested": 18
+                              },
+                              {
+                                  "name": "groovy",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 8,
+                                  "total_code_suggestions": 23,
+                                  "total_code_lines_accepted": 8,
+                                  "total_code_lines_suggested": 43
+                              },
+                              {
+                                  "name": "yaml",
+                                  "total_engaged_users": 3,
+                                  "total_code_acceptances": 14,
+                                  "total_code_suggestions": 60,
+                                  "total_code_lines_accepted": 9,
+                                  "total_code_lines_suggested": 112
+                              },
+                              {
+                                  "name": "typescriptreact",
+                                  "total_engaged_users": 2,
+                                  "total_code_acceptances": 17,
+                                  "total_code_suggestions": 77,
+                                  "total_code_lines_accepted": 25,
+                                  "total_code_lines_suggested": 158
+                              },
+                              {
+                                  "name": "html",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 8,
+                                  "total_code_suggestions": 63,
+                                  "total_code_lines_accepted": 14,
+                                  "total_code_lines_suggested": 317
+                              },
+                              {
+                                  "name": "json",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 46,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 107
+                              },
+                              {
+                                  "name": "vb",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 4,
+                                  "total_code_suggestions": 12,
+                                  "total_code_lines_accepted": 4,
+                                  "total_code_lines_suggested": 33
+                              },
+                              {
+                                  "name": "typescript",
+                                  "total_engaged_users": 2,
+                                  "total_code_acceptances": 5,
+                                  "total_code_suggestions": 13,
+                                  "total_code_lines_accepted": 5,
+                                  "total_code_lines_suggested": 16
+                              },
+                              {
+                                  "name": "ini",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 1,
+                                  "total_code_suggestions": 10,
+                                  "total_code_lines_accepted": 1,
+                                  "total_code_lines_suggested": 30
+                              },
+                              {
+                                  "name": "xml",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 1,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 4
+                              }
+                          ],
+                          "is_custom_model": false,
+                          "total_engaged_users": 35
+                      }
+                  ],
+                  "total_engaged_users": 35
               }
-            ]
-          }
-        ]
+          ],
+          "languages": [
+              {
+                  "name": "unknown",
+                  "total_engaged_users": 10
+              },
+              {
+                  "name": "cpp",
+                  "total_engaged_users": 5
+              },
+              {
+                  "name": "python",
+                  "total_engaged_users": 8
+              },
+              {
+                  "name": "svelte",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "php",
+                  "total_engaged_users": 4
+              },
+              {
+                  "name": "sql",
+                  "total_engaged_users": 6
+              },
+              {
+                  "name": "shellscript",
+                  "total_engaged_users": 4
+              },
+              {
+                  "name": "yaml",
+                  "total_engaged_users": 6
+              },
+              {
+                  "name": "go",
+                  "total_engaged_users": 6
+              },
+              {
+                  "name": "markdown",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "java",
+                  "total_engaged_users": 22
+              },
+              {
+                  "name": "groovy",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "ini",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "html",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "typescriptreact",
+                  "total_engaged_users": 11
+              },
+              {
+                  "name": "typescript",
+                  "total_engaged_users": 6
+              },
+              {
+                  "name": "vb",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "json",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "scss",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "javascriptreact",
+                  "total_engaged_users": 0
+              },
+              {
+                  "name": "makefile",
+                  "total_engaged_users": 0
+              },
+              {
+                  "name": "jsonc",
+                  "total_engaged_users": 0
+              },
+              {
+                  "name": "terraform",
+                  "total_engaged_users": 0
+              },
+              {
+                  "name": "javascript",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "xml",
+                  "total_engaged_users": 0
+              },
+              {
+                  "name": "dockerfile",
+                  "total_engaged_users": 0
+              }
+          ],
+          "total_engaged_users": 78
       }
-    }
+  },
+  {
+      "date": "2025-02-28",
+      "copilot_ide_chat": {
+          "editors": [
+              {
+                  "name": "JetBrains",
+                  "models": [
+                      {
+                          "name": "default",
+                          "total_chats": 83,
+                          "is_custom_model": false,
+                          "total_engaged_users": 19,
+                          "total_chat_copy_events": 67,
+                          "total_chat_insertion_events": 36
+                      }
+                  ],
+                  "total_engaged_users": 19
+              },
+              {
+                  "name": "vscode",
+                  "models": [
+                      {
+                          "name": "default",
+                          "total_chats": 317,
+                          "is_custom_model": false,
+                          "total_engaged_users": 36,
+                          "total_chat_copy_events": 65,
+                          "total_chat_insertion_events": 12
+                      }
+                  ],
+                  "total_engaged_users": 36
+              }
+          ],
+          "total_engaged_users": 53
+      },
+      "total_active_users": 104,
+      "copilot_dotcom_chat": {
+          "models": [
+              {
+                  "name": "default",
+                  "total_chats": 13,
+                  "is_custom_model": false,
+                  "total_engaged_users": 6
+              }
+          ],
+          "total_engaged_users": 6
+      },
+      "total_engaged_users": 89,
+      "copilot_dotcom_pull_requests": {
+          "total_engaged_users": 0
+      },
+      "copilot_ide_code_completions": {
+          "editors": [
+              {
+                  "name": "vscode",
+                  "models": [
+                      {
+                          "name": "default",
+                          "languages": [
+                              {
+                                  "name": "shellscript",
+                                  "total_engaged_users": 3,
+                                  "total_code_acceptances": 27,
+                                  "total_code_suggestions": 90,
+                                  "total_code_lines_accepted": 31,
+                                  "total_code_lines_suggested": 189
+                              },
+                              {
+                                  "name": "go",
+                                  "total_engaged_users": 7,
+                                  "total_code_acceptances": 102,
+                                  "total_code_suggestions": 217,
+                                  "total_code_lines_accepted": 134,
+                                  "total_code_lines_suggested": 366
+                              },
+                              {
+                                  "name": "unknown",
+                                  "total_engaged_users": 4,
+                                  "total_code_acceptances": 746,
+                                  "total_code_suggestions": 835,
+                                  "total_code_lines_accepted": 3586,
+                                  "total_code_lines_suggested": 3850
+                              },
+                              {
+                                  "name": "cpp",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 79,
+                                  "total_code_suggestions": 145,
+                                  "total_code_lines_accepted": 237,
+                                  "total_code_lines_suggested": 1084
+                              },
+                              {
+                                  "name": "yaml",
+                                  "total_engaged_users": 4,
+                                  "total_code_acceptances": 34,
+                                  "total_code_suggestions": 135,
+                                  "total_code_lines_accepted": 63,
+                                  "total_code_lines_suggested": 472
+                              },
+                              {
+                                  "name": "typescriptreact",
+                                  "total_engaged_users": 10,
+                                  "total_code_acceptances": 162,
+                                  "total_code_suggestions": 448,
+                                  "total_code_lines_accepted": 125,
+                                  "total_code_lines_suggested": 663
+                              },
+                              {
+                                  "name": "json",
+                                  "total_engaged_users": 3,
+                                  "total_code_acceptances": 5,
+                                  "total_code_suggestions": 29,
+                                  "total_code_lines_accepted": 4,
+                                  "total_code_lines_suggested": 85
+                              },
+                              {
+                                  "name": "markdown",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 4,
+                                  "total_code_suggestions": 21,
+                                  "total_code_lines_accepted": 7,
+                                  "total_code_lines_suggested": 47
+                              },
+                              {
+                                  "name": "typescript",
+                                  "total_engaged_users": 8,
+                                  "total_code_acceptances": 131,
+                                  "total_code_suggestions": 328,
+                                  "total_code_lines_accepted": 196,
+                                  "total_code_lines_suggested": 574
+                              },
+                              {
+                                  "name": "css",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 1,
+                                  "total_code_suggestions": 5,
+                                  "total_code_lines_accepted": 1,
+                                  "total_code_lines_suggested": 12
+                              },
+                              {
+                                  "name": "php",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 1,
+                                  "total_code_suggestions": 6,
+                                  "total_code_lines_accepted": 1,
+                                  "total_code_lines_suggested": 6
+                              },
+                              {
+                                  "name": "clojure",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 4,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 23
+                              },
+                              {
+                                  "name": "javascript",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 15,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 16
+                              },
+                              {
+                                  "name": "csharp",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 1,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 2
+                              },
+                              {
+                                  "name": "python",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 4,
+                                  "total_code_suggestions": 24,
+                                  "total_code_lines_accepted": 3,
+                                  "total_code_lines_suggested": 36
+                              },
+                              {
+                                  "name": "bat",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 1,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 1
+                              },
+                              {
+                                  "name": "scss",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 4,
+                                  "total_code_suggestions": 14,
+                                  "total_code_lines_accepted": 10,
+                                  "total_code_lines_suggested": 32
+                              },
+                              {
+                                  "name": "ruby",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 3,
+                                  "total_code_suggestions": 12,
+                                  "total_code_lines_accepted": 3,
+                                  "total_code_lines_suggested": 12
+                              },
+                              {
+                                  "name": "sql",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 1,
+                                  "total_code_suggestions": 7,
+                                  "total_code_lines_accepted": 1,
+                                  "total_code_lines_suggested": 9
+                              },
+                              {
+                                  "name": "plaintext",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 1,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 23
+                              },
+                              {
+                                  "name": "html",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 1,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 4
+                              },
+                              {
+                                  "name": "groovy",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 2,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 2
+                              }
+                          ],
+                          "is_custom_model": false,
+                          "total_engaged_users": 29
+                      }
+                  ],
+                  "total_engaged_users": 29
+              },
+              {
+                  "name": "VisualStudio",
+                  "models": [
+                      {
+                          "name": "default",
+                          "languages": [
+                              {
+                                  "name": "cpp",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 42,
+                                  "total_code_suggestions": 125,
+                                  "total_code_lines_accepted": 47,
+                                  "total_code_lines_suggested": 268
+                              }
+                          ],
+                          "is_custom_model": false,
+                          "total_engaged_users": 1
+                      }
+                  ],
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "JetBrains",
+                  "models": [
+                      {
+                          "name": "default",
+                          "languages": [
+                              {
+                                  "name": "java",
+                                  "total_engaged_users": 13,
+                                  "total_code_acceptances": 214,
+                                  "total_code_suggestions": 534,
+                                  "total_code_lines_accepted": 424,
+                                  "total_code_lines_suggested": 2316
+                              },
+                              {
+                                  "name": "sql",
+                                  "total_engaged_users": 2,
+                                  "total_code_acceptances": 4,
+                                  "total_code_suggestions": 40,
+                                  "total_code_lines_accepted": 4,
+                                  "total_code_lines_suggested": 127
+                              },
+                              {
+                                  "name": "go",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 11,
+                                  "total_code_suggestions": 34,
+                                  "total_code_lines_accepted": 18,
+                                  "total_code_lines_suggested": 114
+                              },
+                              {
+                                  "name": "typescriptreact",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 19,
+                                  "total_code_suggestions": 81,
+                                  "total_code_lines_accepted": 23,
+                                  "total_code_lines_suggested": 196
+                              },
+                              {
+                                  "name": "json",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 3,
+                                  "total_code_suggestions": 14,
+                                  "total_code_lines_accepted": 3,
+                                  "total_code_lines_suggested": 47
+                              },
+                              {
+                                  "name": "php",
+                                  "total_engaged_users": 3,
+                                  "total_code_acceptances": 9,
+                                  "total_code_suggestions": 37,
+                                  "total_code_lines_accepted": 9,
+                                  "total_code_lines_suggested": 117
+                              },
+                              {
+                                  "name": "shellscript",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 5,
+                                  "total_code_suggestions": 21,
+                                  "total_code_lines_accepted": 13,
+                                  "total_code_lines_suggested": 60
+                              },
+                              {
+                                  "name": "yaml",
+                                  "total_engaged_users": 3,
+                                  "total_code_acceptances": 3,
+                                  "total_code_suggestions": 17,
+                                  "total_code_lines_accepted": 3,
+                                  "total_code_lines_suggested": 23
+                              },
+                              {
+                                  "name": "markdown",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 1,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 1
+                              },
+                              {
+                                  "name": "xml",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 5,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 16
+                              },
+                              {
+                                  "name": "unknown",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 10,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 12
+                              },
+                              {
+                                  "name": "dockerfile",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 5,
+                                  "total_code_suggestions": 23,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 45
+                              },
+                              {
+                                  "name": "plaintext",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 1,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 2
+                              },
+                              {
+                                  "name": "text",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 5,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 6
+                              },
+                              {
+                                  "name": "typescript",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 12,
+                                  "total_code_suggestions": 24,
+                                  "total_code_lines_accepted": 12,
+                                  "total_code_lines_suggested": 49
+                              }
+                          ],
+                          "is_custom_model": false,
+                          "total_engaged_users": 21
+                      }
+                  ],
+                  "total_engaged_users": 21
+              }
+          ],
+          "languages": [
+              {
+                  "name": "cpp",
+                  "total_engaged_users": 2
+              },
+              {
+                  "name": "shellscript",
+                  "total_engaged_users": 4
+              },
+              {
+                  "name": "unknown",
+                  "total_engaged_users": 4
+              },
+              {
+                  "name": "go",
+                  "total_engaged_users": 8
+              },
+              {
+                  "name": "java",
+                  "total_engaged_users": 13
+              },
+              {
+                  "name": "sql",
+                  "total_engaged_users": 3
+              },
+              {
+                  "name": "yaml",
+                  "total_engaged_users": 7
+              },
+              {
+                  "name": "typescriptreact",
+                  "total_engaged_users": 11
+              },
+              {
+                  "name": "json",
+                  "total_engaged_users": 4
+              },
+              {
+                  "name": "markdown",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "php",
+                  "total_engaged_users": 4
+              },
+              {
+                  "name": "typescript",
+                  "total_engaged_users": 9
+              },
+              {
+                  "name": "css",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "javascript",
+                  "total_engaged_users": 0
+              },
+              {
+                  "name": "xml",
+                  "total_engaged_users": 0
+              },
+              {
+                  "name": "csharp",
+                  "total_engaged_users": 0
+              },
+              {
+                  "name": "clojure",
+                  "total_engaged_users": 0
+              },
+              {
+                  "name": "dockerfile",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "python",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "bat",
+                  "total_engaged_users": 0
+              },
+              {
+                  "name": "plaintext",
+                  "total_engaged_users": 0
+              },
+              {
+                  "name": "scss",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "ruby",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "text",
+                  "total_engaged_users": 0
+              },
+              {
+                  "name": "html",
+                  "total_engaged_users": 0
+              },
+              {
+                  "name": "groovy",
+                  "total_engaged_users": 0
+              }
+          ],
+          "total_engaged_users": 50
+      }
+  },
+  {
+      "date": "2025-03-01",
+      "copilot_ide_chat": {
+          "editors": [
+              {
+                  "name": "vscode",
+                  "models": [
+                      {
+                          "name": "default",
+                          "total_chats": 58,
+                          "is_custom_model": false,
+                          "total_engaged_users": 7,
+                          "total_chat_copy_events": 8,
+                          "total_chat_insertion_events": 2
+                      }
+                  ],
+                  "total_engaged_users": 7
+              },
+              {
+                  "name": "JetBrains",
+                  "models": [
+                      {
+                          "name": "default",
+                          "total_chats": 23,
+                          "is_custom_model": false,
+                          "total_engaged_users": 9,
+                          "total_chat_copy_events": 11,
+                          "total_chat_insertion_events": 8
+                      }
+                  ],
+                  "total_engaged_users": 9
+              }
+          ],
+          "total_engaged_users": 15
+      },
+      "total_active_users": 28,
+      "copilot_dotcom_chat": {
+          "total_engaged_users": 2
+      },
+      "total_engaged_users": 25,
+      "copilot_dotcom_pull_requests": {
+          "total_engaged_users": 0
+      },
+      "copilot_ide_code_completions": {
+          "editors": [
+              {
+                  "name": "vscode",
+                  "models": [
+                      {
+                          "name": "default",
+                          "languages": [
+                              {
+                                  "name": "yaml",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 26,
+                                  "total_code_suggestions": 47,
+                                  "total_code_lines_accepted": 99,
+                                  "total_code_lines_suggested": 633
+                              },
+                              {
+                                  "name": "makefile",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 10,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 15
+                              },
+                              {
+                                  "name": "go",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 35,
+                                  "total_code_suggestions": 84,
+                                  "total_code_lines_accepted": 37,
+                                  "total_code_lines_suggested": 105
+                              },
+                              {
+                                  "name": "typescript",
+                                  "total_engaged_users": 3,
+                                  "total_code_acceptances": 57,
+                                  "total_code_suggestions": 125,
+                                  "total_code_lines_accepted": 103,
+                                  "total_code_lines_suggested": 196
+                              },
+                              {
+                                  "name": "java",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 5,
+                                  "total_code_suggestions": 14,
+                                  "total_code_lines_accepted": 12,
+                                  "total_code_lines_suggested": 25
+                              },
+                              {
+                                  "name": "unknown",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 1,
+                                  "total_code_suggestions": 6,
+                                  "total_code_lines_accepted": 1,
+                                  "total_code_lines_suggested": 8
+                              },
+                              {
+                                  "name": "json",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 4,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 4
+                              }
+                          ],
+                          "is_custom_model": false,
+                          "total_engaged_users": 5
+                      }
+                  ],
+                  "total_engaged_users": 5
+              },
+              {
+                  "name": "JetBrains",
+                  "models": [
+                      {
+                          "name": "default",
+                          "languages": [
+                              {
+                                  "name": "java",
+                                  "total_engaged_users": 8,
+                                  "total_code_acceptances": 107,
+                                  "total_code_suggestions": 377,
+                                  "total_code_lines_accepted": 239,
+                                  "total_code_lines_suggested": 1606
+                              },
+                              {
+                                  "name": "yaml",
+                                  "total_engaged_users": 2,
+                                  "total_code_acceptances": 11,
+                                  "total_code_suggestions": 25,
+                                  "total_code_lines_accepted": 13,
+                                  "total_code_lines_suggested": 56
+                              },
+                              {
+                                  "name": "markdown",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 4,
+                                  "total_code_suggestions": 23,
+                                  "total_code_lines_accepted": 4,
+                                  "total_code_lines_suggested": 37
+                              },
+                              {
+                                  "name": "makefile",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 2,
+                                  "total_code_suggestions": 13,
+                                  "total_code_lines_accepted": 2,
+                                  "total_code_lines_suggested": 23
+                              },
+                              {
+                                  "name": "go",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 4,
+                                  "total_code_suggestions": 11,
+                                  "total_code_lines_accepted": 4,
+                                  "total_code_lines_suggested": 21
+                              },
+                              {
+                                  "name": "unknown",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 3,
+                                  "total_code_suggestions": 12,
+                                  "total_code_lines_accepted": 3,
+                                  "total_code_lines_suggested": 13
+                              },
+                              {
+                                  "name": "sql",
+                                  "total_engaged_users": 2,
+                                  "total_code_acceptances": 2,
+                                  "total_code_suggestions": 12,
+                                  "total_code_lines_accepted": 2,
+                                  "total_code_lines_suggested": 24
+                              },
+                              {
+                                  "name": "flow js",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 4,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 12
+                              },
+                              {
+                                  "name": "groovy",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 1,
+                                  "total_code_suggestions": 4,
+                                  "total_code_lines_accepted": 1,
+                                  "total_code_lines_suggested": 5
+                              },
+                              {
+                                  "name": "ini",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 1,
+                                  "total_code_suggestions": 2,
+                                  "total_code_lines_accepted": 1,
+                                  "total_code_lines_suggested": 2
+                              }
+                          ],
+                          "is_custom_model": false,
+                          "total_engaged_users": 11
+                      }
+                  ],
+                  "total_engaged_users": 11
+              },
+              {
+                  "name": "VisualStudio",
+                  "models": [
+                      {
+                          "name": "default",
+                          "languages": [
+                              {
+                                  "name": "cpp",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 23,
+                                  "total_code_suggestions": 92,
+                                  "total_code_lines_accepted": 25,
+                                  "total_code_lines_suggested": 144
+                              }
+                          ],
+                          "is_custom_model": false,
+                          "total_engaged_users": 1
+                      }
+                  ],
+                  "total_engaged_users": 1
+              }
+          ],
+          "languages": [
+              {
+                  "name": "java",
+                  "total_engaged_users": 9
+              },
+              {
+                  "name": "markdown",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "yaml",
+                  "total_engaged_users": 3
+              },
+              {
+                  "name": "makefile",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "cpp",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "go",
+                  "total_engaged_users": 2
+              },
+              {
+                  "name": "typescript",
+                  "total_engaged_users": 3
+              },
+              {
+                  "name": "sql",
+                  "total_engaged_users": 2
+              },
+              {
+                  "name": "unknown",
+                  "total_engaged_users": 2
+              },
+              {
+                  "name": "flow js",
+                  "total_engaged_users": 0
+              },
+              {
+                  "name": "groovy",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "json",
+                  "total_engaged_users": 0
+              },
+              {
+                  "name": "ini",
+                  "total_engaged_users": 1
+              }
+          ],
+          "total_engaged_users": 17
+      }
+  },
+  {
+      "date": "2025-03-02",
+      "copilot_ide_chat": {
+          "editors": [
+              {
+                  "name": "vscode",
+                  "models": [
+                      {
+                          "name": "default",
+                          "total_chats": 62,
+                          "is_custom_model": false,
+                          "total_engaged_users": 9,
+                          "total_chat_copy_events": 7,
+                          "total_chat_insertion_events": 1
+                      }
+                  ],
+                  "total_engaged_users": 9
+              },
+              {
+                  "name": "JetBrains",
+                  "models": [
+                      {
+                          "name": "default",
+                          "total_chats": 52,
+                          "is_custom_model": false,
+                          "total_engaged_users": 6,
+                          "total_chat_copy_events": 39,
+                          "total_chat_insertion_events": 31
+                      }
+                  ],
+                  "total_engaged_users": 6
+              }
+          ],
+          "total_engaged_users": 14
+      },
+      "total_active_users": 31,
+      "copilot_dotcom_chat": {
+          "total_engaged_users": 3
+      },
+      "total_engaged_users": 26,
+      "copilot_dotcom_pull_requests": {
+          "total_engaged_users": 0
+      },
+      "copilot_ide_code_completions": {
+          "editors": [
+              {
+                  "name": "vscode",
+                  "models": [
+                      {
+                          "name": "default",
+                          "languages": [
+                              {
+                                  "name": "ruby",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 3,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 5
+                              },
+                              {
+                                  "name": "typescript",
+                                  "total_engaged_users": 2,
+                                  "total_code_acceptances": 33,
+                                  "total_code_suggestions": 59,
+                                  "total_code_lines_accepted": 47,
+                                  "total_code_lines_suggested": 89
+                              },
+                              {
+                                  "name": "yaml",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 8,
+                                  "total_code_suggestions": 11,
+                                  "total_code_lines_accepted": 12,
+                                  "total_code_lines_suggested": 24
+                              },
+                              {
+                                  "name": "java",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 3,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 80
+                              },
+                              {
+                                  "name": "unknown",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 3,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 3
+                              }
+                          ],
+                          "is_custom_model": false,
+                          "total_engaged_users": 2
+                      }
+                  ],
+                  "total_engaged_users": 2
+              },
+              {
+                  "name": "VisualStudio",
+                  "models": [
+                      {
+                          "name": "default",
+                          "languages": [
+                              {
+                                  "name": "cpp",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 69,
+                                  "total_code_suggestions": 211,
+                                  "total_code_lines_accepted": 79,
+                                  "total_code_lines_suggested": 364
+                              }
+                          ],
+                          "is_custom_model": false,
+                          "total_engaged_users": 1
+                      }
+                  ],
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "JetBrains",
+                  "models": [
+                      {
+                          "name": "default",
+                          "languages": [
+                              {
+                                  "name": "shellscript",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 5,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 5
+                              },
+                              {
+                                  "name": "java",
+                                  "total_engaged_users": 9,
+                                  "total_code_acceptances": 72,
+                                  "total_code_suggestions": 200,
+                                  "total_code_lines_accepted": 68,
+                                  "total_code_lines_suggested": 455
+                              },
+                              {
+                                  "name": "yaml",
+                                  "total_engaged_users": 3,
+                                  "total_code_acceptances": 80,
+                                  "total_code_suggestions": 173,
+                                  "total_code_lines_accepted": 281,
+                                  "total_code_lines_suggested": 916
+                              },
+                              {
+                                  "name": "go",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 16,
+                                  "total_code_suggestions": 42,
+                                  "total_code_lines_accepted": 18,
+                                  "total_code_lines_suggested": 61
+                              },
+                              {
+                                  "name": "json",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 10,
+                                  "total_code_suggestions": 16,
+                                  "total_code_lines_accepted": 88,
+                                  "total_code_lines_suggested": 383
+                              },
+                              {
+                                  "name": "makefile",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 1,
+                                  "total_code_suggestions": 1,
+                                  "total_code_lines_accepted": 1,
+                                  "total_code_lines_suggested": 8
+                              },
+                              {
+                                  "name": "typescriptreact",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 4,
+                                  "total_code_suggestions": 9,
+                                  "total_code_lines_accepted": 15,
+                                  "total_code_lines_suggested": 21
+                              },
+                              {
+                                  "name": "ini",
+                                  "total_engaged_users": 1,
+                                  "total_code_acceptances": 1,
+                                  "total_code_suggestions": 2,
+                                  "total_code_lines_accepted": 1,
+                                  "total_code_lines_suggested": 2
+                              },
+                              {
+                                  "name": "sql",
+                                  "total_engaged_users": 0,
+                                  "total_code_acceptances": 0,
+                                  "total_code_suggestions": 1,
+                                  "total_code_lines_accepted": 0,
+                                  "total_code_lines_suggested": 1
+                              }
+                          ],
+                          "is_custom_model": false,
+                          "total_engaged_users": 12
+                      }
+                  ],
+                  "total_engaged_users": 12
+              }
+          ],
+          "languages": [
+              {
+                  "name": "ruby",
+                  "total_engaged_users": 0
+              },
+              {
+                  "name": "cpp",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "shellscript",
+                  "total_engaged_users": 0
+              },
+              {
+                  "name": "java",
+                  "total_engaged_users": 9
+              },
+              {
+                  "name": "json",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "go",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "yaml",
+                  "total_engaged_users": 4
+              },
+              {
+                  "name": "typescript",
+                  "total_engaged_users": 2
+              },
+              {
+                  "name": "typescriptreact",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "makefile",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "ini",
+                  "total_engaged_users": 1
+              },
+              {
+                  "name": "sql",
+                  "total_engaged_users": 0
+              },
+              {
+                  "name": "unknown",
+                  "total_engaged_users": 0
+              }
+          ],
+          "total_engaged_users": 15
+      }
+  }
 ]

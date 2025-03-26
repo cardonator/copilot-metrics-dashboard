@@ -47,7 +47,6 @@ func main() {
 	// Set up service clients
 	metricsClient := services.NewCopilotMetricsClient(githubClient, logger)
 	seatsClient := services.NewCopilotSeatsClient(githubClient, logger)
-	usageClient := services.NewCopilotUsageClient(githubClient, logger)
 
 	// Set up repository based on configuration
 	var repo repositories.Repository
@@ -112,18 +111,11 @@ func main() {
 		cfg.UseTestData,
 	)
 
-	usageHandler := handlers.NewUsageHandler(
-		logger,
-		usageClient,
-		repo,
-		cfg.UseTestData,
-	)
-
 	// Set up scheduler
 	scheduler := gocron.NewScheduler(time.UTC)
 
-	// Schedule metrics ingestion - every hour
-	_, err = scheduler.Every(1).Hour().Do(func() {
+	// Schedule metrics ingestion using seconds interval
+	_, err = scheduler.Every(cfg.MetricsScheduleSeconds).Seconds().Do(func() {
 		ctx := context.Background()
 		if err := metricsHandler.Run(ctx); err != nil {
 			logger.Error("Metrics ingestion failed", zap.Error(err))
@@ -132,6 +124,8 @@ func main() {
 	if err != nil {
 		logger.Fatal("Failed to schedule metrics ingestion", zap.Error(err))
 	}
+
+	logger.Info("Scheduled metrics ingestion", zap.Int("interval_seconds", cfg.MetricsScheduleSeconds))
 
 	// Schedule seats ingestion - every hour
 	_, err = scheduler.Every(1).Hour().Do(func() {
@@ -142,17 +136,6 @@ func main() {
 	})
 	if err != nil {
 		logger.Fatal("Failed to schedule seats ingestion", zap.Error(err))
-	}
-
-	// Schedule usage ingestion - every hour
-	_, err = scheduler.Every(1).Hour().Do(func() {
-		ctx := context.Background()
-		if err := usageHandler.Run(ctx); err != nil {
-			logger.Error("Usage ingestion failed", zap.Error(err))
-		}
-	})
-	if err != nil {
-		logger.Fatal("Failed to schedule usage ingestion", zap.Error(err))
 	}
 
 	// Start the scheduler in a non-blocking manner
@@ -172,12 +155,6 @@ func main() {
 		logger.Error("Initial seats ingestion failed", zap.Error(err))
 	} else {
 		logger.Info("Initial seats ingestion completed successfully")
-	}
-
-	if err := usageHandler.Run(ctx); err != nil {
-		logger.Error("Initial usage ingestion failed", zap.Error(err))
-	} else {
-		logger.Info("Initial usage ingestion completed successfully")
 	}
 
 	// Set up signal handling for graceful shutdown
