@@ -1,2 +1,6 @@
 .azure/
 .idea/
+.env
+.env.local
+copilot-metrics.db*
+dataingestion
