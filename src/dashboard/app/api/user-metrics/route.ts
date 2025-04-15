@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCopilotMetrics } from '@/services/copilot-metrics-service';
 import { getCopilotSeats } from '@/services/copilot-seat-service';
+import { CopilotMetrics, CopilotUsageOutput } from '@/features/common/models';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -52,33 +53,25 @@ export async function GET(request: NextRequest) {
     
     if (metricsResult.status === "OK" && metricsResult.response) {
       // Extract aggregate metrics to distribute among users
-      metricsResult.response.forEach(metric => {
+      metricsResult.response.forEach((metricOutput: CopilotUsageOutput) => {
         try {
-          // Check if the metric contains IDE code completions
-          if (metric.copilot_ide_code_completions?.editors) {
-            metric.copilot_ide_code_completions.editors.forEach((editor: any) => {
-              if (editor.models) {
-                editor.models.forEach((model: any) => {
-                  if (model.languages) {
-                    model.languages.forEach((lang: any) => {
-                      totalCodeSuggestions += lang.total_code_suggestions || 0;
-                      totalCodeAcceptances += lang.total_code_acceptances || 0;
-                      
-                      // Track languages
-                      if (lang.name) {
-                        if (!totalLanguages[lang.name]) {
-                          totalLanguages[lang.name] = 0;
-                        }
-                        totalLanguages[lang.name] += lang.total_code_suggestions || 0;
-                      }
-                    });
-                  }
-                });
+          // For CopilotUsageOutput format, use the direct properties
+          totalCodeSuggestions += metricOutput.total_code_suggestions || 0;
+          totalCodeAcceptances += metricOutput.total_code_acceptances || 0;
+          
+          // Extract languages from the breakdown
+          if (metricOutput.breakdown && metricOutput.breakdown.length > 0) {
+            metricOutput.breakdown.forEach(item => {
+              if (item.language) {
+                if (!totalLanguages[item.language]) {
+                  totalLanguages[item.language] = 0;
+                }
+                totalLanguages[item.language] += item.suggestions_count || 0;
               }
             });
-            
-            hasValidMetrics = true;
           }
+          
+          hasValidMetrics = true;
         } catch (err) {
           console.error("Error processing metric:", err);
         }
