@@ -19,6 +19,7 @@ import { cosmosClient, cosmosConfiguration } from "./cosmos-db-service";
 import { format } from "date-fns";
 import { SqlQuerySpec } from "@azure/cosmos";
 import { queryDb } from "./sqlite-db-service";
+import { getCopilotMetrics, IFilter as MetricsFilter } from "./copilot-metrics-service";
 
 export interface IFilter {
   date?: Date;
@@ -51,6 +52,11 @@ export const getCopilotSeats = async (
   const envSuccessConfig = env as ServerActionSuccess<GitHubConfig>;
   const { enterprise, organization } = envSuccessConfig.response;
 
+  // Ensure we have the organization in the filter
+  if (stringIsNullOrEmpty(filter.organization)) {
+    filter.organization = organization || '';
+  }
+
   try {
     // Use the storage type from configuration
     if (storageType === 'cosmosdb' || storageType === 'sqlite') {
@@ -76,11 +82,18 @@ export const getCopilotSeats = async (
         }
       } else {
         // SQLite implementation
+        // Build a query that explicitly looks for your organization
         let query = "SELECT data FROM seats_history";
         const whereConditions = [];
         const params = [];
         
-        // Add conditions to whereConditions array
+        // Always filter by organization if available
+        if (!stringIsNullOrEmpty(filter.organization)) {
+          whereConditions.push("json_extract(data, '$.organization') = ?");
+          params.push(filter.organization);
+        }
+        
+        // Add date condition if provided
         if (filter.date) {
           whereConditions.push("date = ?");
           params.push(format(filter.date, "yyyy-MM-dd"));
@@ -92,22 +105,15 @@ export const getCopilotSeats = async (
           params.push(filter.enterprise);
         }
         
-        // Add organization filter if provided
-        if (!stringIsNullOrEmpty(filter.organization)) {
-          whereConditions.push("json_extract(data, '$.organization') = ?");
-          params.push(filter.organization);
-        }
-        
         // Add WHERE clause if there are any conditions
         if (whereConditions.length > 0) {
           query += " WHERE " + whereConditions.join(" AND ");
         }
         
-        // Add ORDER BY clause at the end
-        if (!filter.date) {
-          // Get the most recent data if no date specified
-          query += " ORDER BY date DESC LIMIT 1";
-        }
+        // Add ORDER BY clause to get the most recent entry
+        query += " ORDER BY date DESC LIMIT 1";
+        
+        console.log("SQLite query:", query, "params:", params);
         
         const result = await queryDb<{ data: string }>(query, params);
         
@@ -409,4 +415,118 @@ const getNextUrlFromLinkHeader = (linkHeader: string | null): string => {
     }
   }
   return "";
+}
+
+// Helper function to extract user-specific metrics
+async function getUserMetrics(organization: string) {
+  // Create a filter for the last 30 days
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - 30);
+  
+  const filter: MetricsFilter = {
+    startDate,
+    endDate,
+    organization,
+    enterprise: '',
+    team: ''
+  };
+  
+  const metricsResult = await getCopilotMetrics(filter);
+  
+  if (metricsResult.status !== "OK" || !metricsResult.response) {
+    return {};
+  }
+  
+  // Process metrics to get user-specific data
+  const userMetrics: Record<string, any> = {};
+  
+  metricsResult.response.forEach(metric => {
+    if (metric.editors && Array.isArray(metric.editors)) {
+      metric.editors.forEach(editor => {
+        if (editor.users && Array.isArray(editor.users)) {
+          editor.users.forEach((user: any) => {
+            const username = user.user_name || user.login;
+            if (!username) return;
+            
+            if (!userMetrics[username]) {
+              userMetrics[username] = {
+                acceptanceRate: 0,
+                totalSuggestions: 0,
+                activeDays: 0,
+                timeSaved: 0,
+                languages: {}
+              };
+            }
+            
+            // Aggregate metrics for this user
+            if (user.accepted !== undefined && user.suggested !== undefined) {
+              const accepted = user.accepted || 0;
+              const suggested = user.suggested || 0;
+              userMetrics[username].totalSuggestions += suggested;
+              
+              // Update acceptance rate as a weighted average
+              if (suggested > 0) {
+                const currentTotal = userMetrics[username].totalSuggestions;
+                const previousRate = userMetrics[username].acceptanceRate;
+                const newRate = (accepted / suggested) * 100;
+                userMetrics[username].acceptanceRate = 
+                  ((currentTotal - suggested) * previousRate + suggested * newRate) / currentTotal;
+              }
+            }
+            
+            // Track active days
+            if (user.active_days) {
+              userMetrics[username].activeDays += user.active_days;
+            }
+            
+            // Track time saved
+            if (user.time_saved_seconds) {
+              userMetrics[username].timeSaved += user.time_saved_seconds;
+            }
+            
+            // Track languages
+            if (user.languages && Array.isArray(user.languages)) {
+              user.languages.forEach((lang: any) => {
+                if (lang.name) {
+                  if (!userMetrics[username].languages[lang.name]) {
+                    userMetrics[username].languages[lang.name] = 0;
+                  }
+                  userMetrics[username].languages[lang.name] += lang.suggested || 0;
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+  
+  // Format the metrics
+  Object.keys(userMetrics).forEach(username => {
+    // Format acceptance rate
+    userMetrics[username].acceptanceRate = `${userMetrics[username].acceptanceRate.toFixed(1)}%`;
+    
+    // Format total suggestions
+    userMetrics[username].totalSuggestions = userMetrics[username].totalSuggestions.toLocaleString();
+    
+    // Format time saved (convert seconds to hours and minutes)
+    const timeInSeconds = userMetrics[username].timeSaved;
+    const hours = Math.floor(timeInSeconds / 3600);
+    const minutes = Math.floor((timeInSeconds % 3600) / 60);
+    userMetrics[username].timeSaved = hours > 0 
+      ? `${hours}h ${minutes}m` 
+      : `${minutes}m`;
+    
+    // Format most used languages (top 3)
+    const languages = userMetrics[username].languages;
+    const sortedLangs = Object.entries(languages)
+      .sort(([, a]: any, [, b]: any) => b - a)
+      .slice(0, 3)
+      .map(([name]: any) => name);
+    
+    userMetrics[username].mostUsedLanguages = sortedLangs.join(', ') || 'None';
+  });
+  
+  return userMetrics;
 }

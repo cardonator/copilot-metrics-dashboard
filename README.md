@@ -1,3 +1,91 @@
+# GitHub Copilot Metrics Dashboard
+
+A dashboard for tracking GitHub Copilot usage metrics across your organization.
+
+## Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn
+- A GitHub personal access token (PAT) with appropriate permissions
+- Access to a GitHub organization with Copilot subscriptions
+
+## Setup
+
+1. Clone the repository:
+```
+git clone https://github.com/microsoft/copilot-metrics-dashboard.git
+```
+
+2. Navigate to the project directory:
+```
+cd copilot-metrics-dashboard
+```
+
+3. Install dependencies for both the background service and dashboard:
+```
+npm install
+```
+
+4. Configure environment variables:
+- Copy the example environment files in both directories:
+  ```
+  cp src/background/.env.example src/background/.env.local
+  cp src/dashboard/.env.example src/dashboard/.env.local
+  ```
+- Update the `.env.local` files with your specific settings
+
+5. **Important: GitHub Authentication**
+- You must uncomment and set a valid GitHub token in `src/dashboard/.env.local`:
+  ```
+  GITHUB_ORGANIZATION=your-organization
+  GITHUB_TOKEN=your-personal-access-token
+  ```
+- Ensure your token has `read:org` permissions at minimum
+- If you encounter authorization errors, check that your token is valid and has the correct permissions
+
+6. Database Configuration:
+- The system uses SQLite by default (`ENABLE_SQLITE=true`)
+- For SQLite, set the correct path to your database:
+  ```
+  SQLITE_DB_PATH=../background/copilot-metrics.db
+  ```
+- Relative paths are based on the execution directory, absolute paths are recommended for reliability
+
+## Running the Application
+
+### Start the Background Service
+
+The background service collects metrics from GitHub and stores them in the database.
+
+This service should be run periodically (daily or weekly) to refresh metrics data.
+
+### Start the Dashboard
+```
+npm start
+```
+
+The dashboard will be available at http://localhost:3000 by default.
+
+## Troubleshooting
+
+### Authentication Errors
+
+If you see "Authorization failed" errors, check:
+- Your GitHub token is uncommented in the `.env.local` file
+- The token has not expired
+- The token has proper permissions for your organization
+- The organization name is correctly specified
+
+### Database Issues
+
+- Ensure the path to the SQLite database is correct 
+- Check that the background service has successfully created the database
+- For first-time setup, run the background service before starting the dashboard
+
+## License
+
+[License information]
+
 # GitHub Copilot Metrics - Dashboard
 
 1. [Introduction](#introduction)

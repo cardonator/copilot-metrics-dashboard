@@ -3,6 +3,7 @@
 import { Table } from "@tanstack/react-table";
 import { X } from "lucide-react";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import { DataTableLanguageFilter } from "./data-table-language-filter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTableViewOptions } from "./data-table-view-options";
@@ -30,11 +31,19 @@ export function DataTableToolbar<TData>({ table, search, filters, enableExport }
                     />
                 )}
                 {filters?.map((filter) => (
-                    <DataTableFacetedFilter
-                        key={filter.column}
-                        column={table.getColumn(filter.column)}
-                        title={filter.label}
-                    />
+                    filter.column === "mostUsedLanguages" ? (
+                        <DataTableLanguageFilter
+                            key={filter.column}
+                            column={table.getColumn(filter.column)}
+                            title={filter.label}
+                        />
+                    ) : (
+                        <DataTableFacetedFilter
+                            key={filter.column}
+                            column={table.getColumn(filter.column)}
+                            title={filter.label}
+                        />
+                    )
                 ))}
                 {isFiltered && (
                     <Button

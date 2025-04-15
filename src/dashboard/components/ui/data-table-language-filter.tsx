@@ -8,14 +8,40 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "@/components/ui/command";
 
-interface DataTableFacetedFilterProps<TData, TValue> {
+interface DataTableLanguageFilterProps<TData, TValue> {
     column?: Column<TData, TValue>;
     title?: string;
 }
 
-export function DataTableFacetedFilter<TData, TValue>({ column, title }: DataTableFacetedFilterProps<TData, TValue>) {
+export function DataTableLanguageFilter<TData, TValue>({ column, title }: DataTableLanguageFilterProps<TData, TValue>) {
     const facets = column?.getFacetedUniqueValues();
     const selectedValues = new Set(column?.getFilterValue() as string[]);
+    const [searchValue, setSearchValue] = React.useState("");
+
+    // Extract individual languages from comma-separated lists
+    const languageOptions = React.useMemo(() => {
+        const uniqueLanguages = new Set<string>();
+        if (facets) {
+            Array.from(facets.keys()).forEach(value => {
+                if (typeof value === 'string' && value.toLowerCase() !== 'n/a') {
+                    // Split comma-separated language lists and trim whitespace
+                    const languages = value.split(',').map(lang => lang.trim());
+                    languages.forEach(lang => {
+                        if (lang) uniqueLanguages.add(lang);
+                    });
+                }
+            });
+        }
+        return Array.from(uniqueLanguages).sort();
+    }, [facets]);
+
+    // Filter language options based on search term
+    const filteredLanguageOptions = React.useMemo(() => {
+        if (!searchValue) return languageOptions;
+        return languageOptions.filter(language => 
+            language.toLowerCase().includes(searchValue.toLowerCase())
+        );
+    }, [languageOptions, searchValue]);
 
     return (
         <Popover>
@@ -63,21 +89,24 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title }: DataTab
                 className="w-[200px] p-0"
                 align="start">
                 <Command>
-                    <CommandInput placeholder={title} key="command-input" />
-                    <CommandList key="command-list">
-                        <CommandEmpty key="command-empty">No results found.</CommandEmpty>
-                        <CommandGroup key="facets-group">
-                            {Array.from(facets ?? []).map(([value, count]) => {
-                                const isSelected = selectedValues.has(value);
-                                const keyValue = String(value || 'empty');
+                    <CommandInput 
+                        placeholder={title} 
+                        value={searchValue}
+                        onValueChange={setSearchValue}
+                    />
+                    <CommandList>
+                        <CommandEmpty>No languages found.</CommandEmpty>
+                        <CommandGroup>
+                            {filteredLanguageOptions.map((language) => {
+                                const isSelected = selectedValues.has(language);
                                 return (
                                     <CommandItem
-                                        key={keyValue}
+                                        key={language}
                                         onSelect={() => {
                                             if (isSelected) {
-                                                selectedValues.delete(value);
+                                                selectedValues.delete(language);
                                             } else {
-                                                selectedValues.add(value);
+                                                selectedValues.add(language);
                                             }
                                             const filterValues = Array.from(selectedValues);
                                             column?.setFilterValue(filterValues.length ? filterValues : undefined);
@@ -85,18 +114,16 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title }: DataTab
                                         <div className={cn("mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary", isSelected ? "bg-primary text-primary-foreground" : "opacity-50 [&_svg]:invisible")}>
                                             <Check />
                                         </div>
-                                        <span>{value}</span>
-                                        {count && <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">{count}</span>}
+                                        <span>{language}</span>
                                     </CommandItem>
                                 );
                             })}
                         </CommandGroup>
                         {selectedValues.size > 0 && (
-                            <React.Fragment key="clear-filters-section">
-                                <CommandSeparator key="command-separator" />
-                                <CommandGroup key="clear-filters-group">
+                            <React.Fragment>
+                                <CommandSeparator />
+                                <CommandGroup>
                                     <CommandItem
-                                        key="clear-filters-item"
                                         onSelect={() => column?.setFilterValue(undefined)}
                                         className="justify-center text-center">
                                         Clear filters

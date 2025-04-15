@@ -29,14 +29,23 @@ export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps
                 <DropdownMenuSeparator />
                 {table
                     .getAllColumns()
-                    .filter((column) => typeof column.accessorFn !== "undefined" && column.getCanHide())
+                    .filter((column) => 
+                        typeof column.accessorFn !== "undefined" && 
+                        column.getCanHide() &&
+                        column.id !== "rowNumber" // Exclude the row number column
+                    )
                     .map((column) => {
+                        // Safely access the column meta data
+                        const columnName = column.columnDef.meta ? 
+                            (column.columnDef.meta as { name?: string }).name || column.id : 
+                            column.id;
+                            
                         return (
                             <DropdownMenuCheckboxItem
                                 key={column.id}
                                 checked={column.getIsVisible()}
                                 onCheckedChange={(value) => column.toggleVisibility(!!value)}>
-                                {(column.columnDef.meta as { name: string }).name}
+                                {columnName}
                             </DropdownMenuCheckboxItem>
                         );
                     })}
