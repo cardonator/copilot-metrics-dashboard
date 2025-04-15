@@ -244,7 +244,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Error processing user metrics:', error);
     return NextResponse.json({
-      "tbogin": {
+      "exampleUser": {
         acceptanceRate: "75.5%",
         totalSuggestions: "1,245",
         activeDays: "18",
